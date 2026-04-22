@@ -73,9 +73,8 @@ function buildSetupForm() {
   document.getElementById('stockInputs').innerHTML = MATERIAL_DEFAULTS.map((m, i) => {
     const auto = rec[m.id];
     const fixed = (m.id === 'blue_brick' || m.id === 'urethane' || m.id === 'plywood');
-    const fixedLabel = m.id === 'blue_brick' ? '고정 1장' : m.id === 'urethane' ? '고정 20장' : m.id === 'plywood' ? '팀수-1' : '';
     return `<div class="stock-row">
-      <span class="stock-name">${m.emoji} ${m.name}${fixed ? ` <span style="font-size:0.62rem;color:var(--red);margin-left:3px;">${fixedLabel}</span>` : ''}</span>
+      <span class="stock-name">${m.emoji} ${m.name}</span>
       <span class="stock-auto" id="auto${i}">권장 ${auto}장</span>
       <div class="stock-input-wrap">
         <input type="number" id="mstock${i}" value="${auto}" min="1" max="99" class="auto-set"
