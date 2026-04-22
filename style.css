@@ -204,7 +204,7 @@ label { font-size: 0.8rem; font-weight: 600; color: var(--muted); display: block
 /* ── MODAL ── */
 .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:500; align-items:center; justify-content:center; }
 .modal-bg.open { display:flex; }
-.modal { background:white; border-radius:14px; padding:1.8rem; max-width:420px; width:92%; box-shadow:0 20px 60px rgba(0,0,0,0.25); }
+.modal { background:white; border-radius:14px; padding:1.8rem; max-width:550px; width:92%; box-shadow:0 20px 60px rgba(0,0,0,0.25); }
 .modal h3 { font-family:'Black Han Sans',sans-serif; font-size:1.25rem; margin-bottom:1.1rem; }
 .modal-row { margin-bottom:0.8rem; }
 .modal-actions { display:flex; gap:0.5rem; justify-content:flex-end; margin-top:1.3rem; }

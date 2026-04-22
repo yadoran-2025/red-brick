@@ -2,12 +2,12 @@
 //  MATERIAL DEFAULTS
 // ═══════════════════════════════════════
 const MATERIAL_DEFAULTS = [
-  { id:'red_brick',  name:'빨간 벽돌', emoji:'🧱', missionNeed:2 },
-  { id:'iron',       name:'철근',      emoji:'🔩', missionNeed:1 },
-  { id:'blue_brick', name:'파란 벽돌', emoji:'🔷', missionNeed:0 },
-  { id:'cement',     name:'시멘트',    emoji:'🪨', missionNeed:1 },
-  { id:'urethane',   name:'우레탄',    emoji:'🟡', missionNeed:0 },
-  { id:'plywood',    name:'나무합판',  emoji:'🪵', missionNeed:1 },
+  { id: 'red_brick', name: '빨간 벽돌', emoji: '🧱', missionNeed: 2 },
+  { id: 'iron', name: '철근', emoji: '🔩', missionNeed: 1 },
+  { id: 'blue_brick', name: '파란 벽돌', emoji: '🔷', missionNeed: 0 },
+  { id: 'cement', name: '시멘트', emoji: '🪨', missionNeed: 1 },
+  { id: 'urethane', name: '우레탄', emoji: '🟡', missionNeed: 0 },
+  { id: 'plywood', name: '나무합판', emoji: '🪵', missionNeed: 1 },
 ];
 
 // 팀 수 → 권장 카드 수량 (확정 규칙)
@@ -19,12 +19,12 @@ const MATERIAL_DEFAULTS = [
 // 나무합판  : 팀수 - 1
 function calcRecommendedStock(n) {
   return {
-    red_brick:  n * 2 + 1,
-    iron:       n + 1,
+    red_brick: n * 2 + 1,
+    iron: n + 1,
     blue_brick: 1,
-    cement:     n,
-    urethane:   20,
-    plywood:    Math.max(1, n - 1),
+    cement: n,
+    urethane: 20,
+    plywood: Math.max(1, n - 1),
   };
 }
 
@@ -32,14 +32,14 @@ function calcRecommendedStock(n) {
 //  RUNTIME STATE
 // ═══════════════════════════════════════
 let currentSlotName = null;
-let teams       = [];
-let materials   = [];
-let curIdx      = 0;
-let curBid      = 1;
-let logs        = [];
+let teams = [];
+let materials = [];
+let curIdx = 0;
+let curBid = 1;
+let logs = [];
 let saleHistory = [];       // { matId, price, teamName }
-let chartMatId  = 'red_brick';
-let timerSec    = 60;
+let chartMatId = 'red_brick';
+let timerSec = 60;
 let timerRunning = false;
 let timerInterval = null;
 
@@ -50,7 +50,7 @@ function switchTab(id) {
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === id));
   document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.id === 'page-' + id));
   if (id === 'auction') refreshAuctionUI();
-  if (id === 'score')   renderScore();
+  if (id === 'score') renderScore();
 }
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
 
@@ -136,7 +136,7 @@ function applySetup() {
 function refreshAuctionUI() {
   const empty = teams.length === 0;
   document.getElementById('auction-empty').style.display = empty ? 'block' : 'none';
-  document.getElementById('auction-main').style.display  = empty ? 'none'  : 'block';
+  document.getElementById('auction-main').style.display = empty ? 'none' : 'block';
   if (empty) return;
   updateStage(); updateTeamGrid(); updateQueue(); updateTimerDisplay();
   renderChartTabs(); renderChart();
@@ -147,7 +147,7 @@ function updateStage() {
   const remaining = m.stock - m.soldCount;
   const pct = m.stock > 0 ? (remaining / m.stock * 100) : 0;
   document.getElementById('stageEmoji').textContent = m.emoji;
-  document.getElementById('stageName').textContent  = m.name;
+  document.getElementById('stageName').textContent = m.name;
   document.getElementById('stageStock').textContent = `남은 ${remaining}장 / 전체 ${m.stock}장`;
   const bar = document.getElementById('stockBarFill');
   bar.style.width = pct + '%';
@@ -181,8 +181,8 @@ function updateTeamGrid() {
 function updateQueue() {
   document.getElementById('queueList').innerHTML = materials.map((m, i) => {
     const done = m.soldCount >= m.stock;
-    const cur  = i === curIdx && !done;
-    const cls  = cur ? 'cur' : done ? 'done' : '';
+    const cur = i === curIdx && !done;
+    const cls = cur ? 'cur' : done ? 'done' : '';
     const onclick = (!done && !cur) ? `onclick="jumpToItem(${i})"` : '';
     const remaining = m.stock - m.soldCount;
     return `<div class="queue-row ${cls}" ${onclick}>
@@ -212,7 +212,7 @@ function raiseBid() {
 // 팀 버튼 직접 클릭 → 즉시 낙찰
 function sellTo(ti) {
   const team = teams[ti];
-  const mat  = materials[curIdx];
+  const mat = materials[curIdx];
   if (curBid > team.money) { toast(`❌ ${team.name} 잔액 부족!`); return; }
 
   team.money -= curBid;
@@ -280,7 +280,7 @@ function renderChart() {
     return;
   }
 
-  const W=320, H=130, PL=34, PR=8, PT=12, PB=26;
+  const W = 320, H = 130, PL = 34, PR = 8, PT = 12, PB = 26;
   const prices = sales.map(s => s.price);
   const minP = Math.max(0, Math.min(...prices) - 1);
   const maxP = Math.max(...prices) + 1;
@@ -294,12 +294,12 @@ function renderChart() {
   const yVals = [minP, Math.round((minP + maxP) / 2), maxP];
   const yGrid = yVals.map(v => {
     const y = toY(v).toFixed(1);
-    return `<line x1="${PL}" y1="${y}" x2="${W-PR}" y2="${y}" stroke="#eee" stroke-width="1"/>
-            <text x="${PL-3}" y="${(parseFloat(y)+3.5).toFixed(1)}" text-anchor="end" font-size="9" fill="#bbb">${v}</text>`;
+    return `<line x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}" stroke="#eee" stroke-width="1"/>
+            <text x="${PL - 3}" y="${(parseFloat(y) + 3.5).toFixed(1)}" text-anchor="end" font-size="9" fill="#bbb">${v}</text>`;
   }).join('');
 
   // 면적 채우기
-  const areaPath = `${PL},${toY(sales[0].price).toFixed(1)} ${pts} ${toX(sales.length-1).toFixed(1)},${H-PB} ${PL},${H-PB}`;
+  const areaPath = `${PL},${toY(sales[0].price).toFixed(1)} ${pts} ${toX(sales.length - 1).toFixed(1)},${H - PB} ${PL},${H - PB}`;
 
   // 점 + 라벨 + X축(팀명)
   const dots = sales.map((s, i) => {
@@ -308,13 +308,13 @@ function renderChart() {
     const shortName = s.teamName.length > 3 ? s.teamName.slice(0, 3) : s.teamName;
     return `<circle cx="${x}" cy="${y}" r="4" fill="var(--red)" stroke="white" stroke-width="1.5"/>
             <text x="${x}" y="${labelY}" text-anchor="middle" font-size="9" fill="#333" font-weight="700">${s.price}</text>
-            <text x="${x}" y="${H-4}" text-anchor="middle" font-size="8" fill="#999">${shortName}</text>`;
+            <text x="${x}" y="${H - 4}" text-anchor="middle" font-size="8" fill="#999">${shortName}</text>`;
   }).join('');
 
   area.innerHTML = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
     ${yGrid}
-    <line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H-PB}" stroke="#ddd" stroke-width="1"/>
-    <line x1="${PL}" y1="${H-PB}" x2="${W-PR}" y2="${H-PB}" stroke="#ddd" stroke-width="1"/>
+    <line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H - PB}" stroke="#ddd" stroke-width="1"/>
+    <line x1="${PL}" y1="${H - PB}" x2="${W - PR}" y2="${H - PB}" stroke="#ddd" stroke-width="1"/>
     <polyline points="${areaPath}" fill="var(--red)" fill-opacity="0.07" stroke="none"/>
     <polyline points="${pts}" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
     ${dots}
@@ -326,7 +326,7 @@ function renderChart() {
 // ═══════════════════════════════════════
 function addLog(text, isWin = false) {
   const now = new Date();
-  const ts = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+  const ts = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
   logs.unshift({ ts, text, isWin });
   const box = document.getElementById('logBox');
   if (!box) return;
@@ -365,7 +365,7 @@ function updateTimerDisplay() {
   const el = document.getElementById('timerDisplay');
   if (!el) return;
   const m = Math.floor(timerSec / 60), s = timerSec % 60;
-  el.textContent = `${m}:${String(s).padStart(2,'0')}`;
+  el.textContent = `${m}:${String(s).padStart(2, '0')}`;
   el.classList.toggle('warn', timerSec <= 10 && timerSec > 0);
 }
 
@@ -387,8 +387,8 @@ function renderScore() {
     if (ok && spent < bestCost) { bestCost = spent; bestTeam = t.name; }
     return `<tr>
       <td><b>${t.name}</b></td><td>${t.money}</td>
-      <td>${t.items.red_brick||0}</td><td>${t.items.iron||0}</td><td>${t.items.blue_brick||0}</td>
-      <td>${t.items.cement||0}</td><td>${t.items.urethane||0}</td><td>${t.items.plywood||0}</td>
+      <td>${t.items.red_brick || 0}</td><td>${t.items.iron || 0}</td><td>${t.items.blue_brick || 0}</td>
+      <td>${t.items.cement || 0}</td><td>${t.items.urethane || 0}</td><td>${t.items.plywood || 0}</td>
       <td>${spent}</td>
       <td>${ok ? '<span class="ms-ok">✅ 성공</span>' : '<span class="ms-fail">❌ 미달</span>'}</td>
     </tr>`;
@@ -414,14 +414,14 @@ function saveProgress() {
       slotName: currentSlotName, teams, materials, curIdx, curBid, logs, saleHistory, savedAt: new Date().toISOString()
     }));
     showSaveStatus();
-  } catch(e) {}
+  } catch (e) { }
 }
 
 function showSaveStatus() {
   const el = document.getElementById('saveStatus');
   if (!el) return;
   const now = new Date();
-  const t = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+  const t = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
   el.textContent = `💾 [${currentSlotName}] ${t} 자동저장 완료`;
   el.style.color = 'var(--green)';
   setTimeout(() => { el.style.color = 'var(--muted)'; }, 2000);
@@ -429,31 +429,31 @@ function showSaveStatus() {
 
 function checkSavedSessions() {
   let saves = [];
-  for(let i = 0; i < localStorage.length; i++) {
+  for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    if(key.startsWith(SAVE_PREFIX)) {
+    if (key.startsWith(SAVE_PREFIX)) {
       try {
         const data = JSON.parse(localStorage.getItem(key));
-        if(data && data.teams) saves.push({ key, data });
-      } catch(e) {}
+        if (data && data.teams) saves.push({ key, data });
+      } catch (e) { }
     }
   }
-  
+
   if (saves.length > 0) {
-    saves.sort((a,b) => new Date(b.data.savedAt) - new Date(a.data.savedAt));
+    saves.sort((a, b) => new Date(b.data.savedAt) - new Date(a.data.savedAt));
     document.getElementById('restoreModal').classList.add('open');
     const listEl = document.getElementById('restoreSlotList');
     listEl.innerHTML = saves.map(s => {
       const savedAt = new Date(s.data.savedAt);
-      const timeStr = `${savedAt.getMonth()+1}/${savedAt.getDate()} ${String(savedAt.getHours()).padStart(2,'0')}:${String(savedAt.getMinutes()).padStart(2,'0')}`;
+      const timeStr = `${savedAt.getMonth() + 1}/${savedAt.getDate()} ${String(savedAt.getHours()).padStart(2, '0')}:${String(savedAt.getMinutes()).padStart(2, '0')}`;
       return `<div class="slot-row" id="row-${s.key}">
         <div class="slot-info">
           <span class="slot-name">📁 ${s.data.slotName || '이름 없음'}</span>
-          <span class="slot-time">최근 기록: ${timeStr} · 진행 자원: ${s.data.curIdx+1}단계</span>
+          <span class="slot-time">최근 기록: ${timeStr} </span>
         </div>
         <div class="slot-btns">
-          <button class="btn btn-red" style="font-size:0.75rem;padding:0.4rem 0.8rem;" onclick="doRestore('${s.key}')">이어하기</button>
-          <button class="btn btn-ghost" style="font-size:0.75rem;padding:0.4rem 0.8rem;" onclick="deleteSlot('${s.key}')">삭제</button>
+          <button class="btn btn-red" style="font-size:0.85rem;padding:0.6rem 1.2rem;min-width:80px;" onclick="doRestore('${s.key}')">이어하기</button>
+          <button class="btn btn-ghost" style="font-size:0.85rem;padding:0.6rem 1.2rem;min-width:80px;" onclick="deleteSlot('${s.key}')">삭제</button>
         </div>
       </div>`;
     }).join('');
@@ -463,22 +463,22 @@ function checkSavedSessions() {
 function doRestore(key) {
   const data = JSON.parse(localStorage.getItem(key));
   currentSlotName = data.slotName || key.replace(SAVE_PREFIX, '');
-  teams       = data.teams;
-  materials   = data.materials;
-  curIdx      = data.curIdx;
-  curBid      = data.curBid;
-  logs        = data.logs || [];
+  teams = data.teams;
+  materials = data.materials;
+  curIdx = data.curIdx;
+  curBid = data.curBid;
+  logs = data.logs || [];
   saleHistory = data.saleHistory || [];
-  
+
   clearInterval(timerInterval); timerRunning = false; timerSec = 60;
-  
+
   const setupNameInput = document.getElementById('slotNameInput');
   if (setupNameInput) setupNameInput.value = currentSlotName;
   const teamCountSelect = document.getElementById('teamCount');
   if (teamCountSelect) teamCountSelect.value = teams.length;
-  
+
   switchTab('auction');
-  
+
   const box = document.getElementById('logBox');
   if (box && logs.length) {
     box.innerHTML = logs.map(l =>
@@ -494,16 +494,16 @@ function deleteSlot(key) {
   if (confirm('이 진행 상황 기록을 정말 삭제하시겠습니까?')) {
     localStorage.removeItem(key);
     const row = document.getElementById('row-' + key);
-    if(row) row.remove();
+    if (row) row.remove();
     const listEl = document.getElementById('restoreSlotList');
-    if(!listEl || listEl.innerHTML.trim() === '') closeRestoreModal();
+    if (!listEl || listEl.innerHTML.trim() === '') closeRestoreModal();
     toast('🗑 기록이 삭제되었습니다.');
   }
 }
 
 function closeRestoreModal() {
   const modal = document.getElementById('restoreModal');
-  if(modal) modal.classList.remove('open');
+  if (modal) modal.classList.remove('open');
 }
 
 // ═══════════════════════════════════════
