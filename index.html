@@ -278,6 +278,12 @@
                 <div class="stock-bar-fill" id="stockBarFill" style="width:100%"></div>
               </div>
             </div>
+            <div style="margin-bottom:0.8rem; display:flex; justify-content:center; align-items:center; gap:0.5rem;">
+              <span style="font-size:0.75rem; color:#aaa;">판매 수량:</span>
+              <button class="btn btn-ghost" style="padding:2px 8px; color:white; border-color:#555;" onclick="changeQty(-1)">-</button>
+              <span id="qtyNum" style="font-size:1.1rem; font-weight:bold; min-width:20px;">1</span>
+              <button class="btn btn-ghost" style="padding:2px 8px; color:white; border-color:#555;" onclick="changeQty(1)">+</button>
+            </div>
             <div class="bid-box">
               <div class="bid-lbl">현재 입찰가</div>
               <div class="bid-num" id="bidNum">1</div>
@@ -298,20 +304,11 @@
             </div>
             <div class="sell-row" style="margin-top:0.6rem;">
               <button class="btn btn-ghost" style="color:white;border-color:#555;" onclick="skipItem()">다음 재료 →</button>
+              <button class="btn btn-ghost" style="color:#ffb3b3;border-color:#a33;" onclick="undoLastSale()">↩️ 직전 낙찰 취소</button>
             </div>
           </div>
 
-          <!-- 타이머 -->
-          <div class="timer-box mt">
-            <div class="timer-lbl">⏱ 경매 타이머</div>
-            <div class="timer-num" id="timerDisplay">1:00</div>
-            <div class="timer-btns">
-              <button class="btn btn-ghost" style="color:white;border-color:#555;" onclick="resetTimer(30)">30초</button>
-              <button class="btn btn-ghost" style="color:white;border-color:#555;" onclick="resetTimer(60)">1분</button>
-              <button class="btn btn-ghost" style="color:white;border-color:#555;" onclick="resetTimer(120)">2분</button>
-              <button class="btn btn-red" id="timerToggleBtn" onclick="toggleTimer()">▶ 시작</button>
-            </div>
-          </div>
+
 
           <!-- 로그 -->
           <div class="card mt">

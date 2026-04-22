@@ -39,9 +39,7 @@ let curBid = 1;
 let logs = [];
 let saleHistory = [];       // { matId, price, teamName }
 let chartMatId = 'red_brick';
-let timerSec = 60;
-let timerRunning = false;
-let timerInterval = null;
+let currentQty = 1;
 
 // ═══════════════════════════════════════
 //  TAB
@@ -124,7 +122,6 @@ function applySetup() {
     return { ...m, stock, soldCount: 0 };
   });
   curIdx = 0; curBid = 1; logs = []; saleHistory = [];
-  clearInterval(timerInterval); timerRunning = false; timerSec = 60;
   saveProgress();
   toast('설정 완료! 경매를 시작하세요 🎉');
   setTimeout(() => switchTab('auction'), 700);
@@ -138,7 +135,7 @@ function refreshAuctionUI() {
   document.getElementById('auction-empty').style.display = empty ? 'block' : 'none';
   document.getElementById('auction-main').style.display = empty ? 'none' : 'block';
   if (empty) return;
-  updateStage(); updateTeamGrid(); updateQueue(); updateTimerDisplay();
+  updateStage(); updateTeamGrid(); updateQueue();
   renderChartTabs(); renderChart();
 }
 
@@ -154,16 +151,23 @@ function updateStage() {
   bar.style.background = pct <= 25 ? '#ff4444' : pct <= 50 ? 'var(--yellow)' : 'var(--red-light)';
   document.getElementById('bidNum').textContent = curBid;
   updateTeamBidBtns();
+
+  currentQty = 1;
+  const qtyEl = document.getElementById('qtyNum');
+  if (qtyEl) qtyEl.textContent = currentQty;
 }
 
 function updateTeamBidBtns() {
   const wrap = document.getElementById('teamBidBtns');
   if (!wrap) return;
+  const m = materials[curIdx];
+  const remaining = m ? (m.stock - m.soldCount) : 0;
+  
   wrap.innerHTML = teams.map((t, i) => {
-    const canAfford = t.money >= curBid;
+    const canAfford = t.money >= curBid && remaining >= currentQty;
     return `<button class="team-bid-btn${canAfford ? '' : ' no-money'}"
       onclick="${canAfford ? `sellTo(${i})` : ''}"
-      ${canAfford ? '' : 'disabled title="잔액 부족"'}>
+      ${canAfford ? '' : 'disabled title="잔액 부족 또는 재고 없음"'}>
       ${t.name}
       <span class="tb-money">${t.money}어스 보유</span>
     </button>`;
@@ -202,6 +206,15 @@ function changeBid(delta) {
   updateTeamBidBtns();
 }
 
+function changeQty(delta) {
+  if (materials.length === 0) return;
+  const m = materials[curIdx];
+  const remaining = m.stock - m.soldCount;
+  currentQty = Math.max(1, Math.min(remaining, currentQty + delta));
+  const qtyEl = document.getElementById('qtyNum');
+  if (qtyEl) qtyEl.textContent = currentQty;
+}
+
 function raiseBid() {
   curBid++;
   document.getElementById('bidNum').textContent = curBid;
@@ -213,15 +226,18 @@ function raiseBid() {
 function sellTo(ti) {
   const team = teams[ti];
   const mat = materials[curIdx];
+  const remaining = mat.stock - mat.soldCount;
+  
+  if (remaining < currentQty) { toast(`❌ 남은 재고가 부족합니다!`); return; }
   if (curBid > team.money) { toast(`❌ ${team.name} 잔액 부족!`); return; }
 
   team.money -= curBid;
-  team.items[mat.id] = (team.items[mat.id] || 0) + 1;
-  mat.soldCount++;
-  saleHistory.push({ matId: mat.id, price: curBid, teamName: team.name });
+  team.items[mat.id] = (team.items[mat.id] || 0) + currentQty;
+  mat.soldCount += currentQty;
+  saleHistory.push({ matId: mat.id, price: curBid, teamName: team.name, qty: currentQty });
 
-  addLog(`🏷 [낙찰] ${team.name} ← ${mat.name} (${curBid}어스)`, true);
-  toast(`✅ ${team.name} 낙찰 완료!`);
+  addLog(`🏷 [낙찰] ${team.name} ← ${mat.name} ${currentQty}장 (${curBid}어스)`, true);
+  toast(`✅ ${team.name} ${currentQty}장 낙찰 완료!`);
 
   if (mat.soldCount >= mat.stock) {
     addLog(`📦 ${mat.name} 매진!`);
@@ -233,6 +249,51 @@ function sellTo(ti) {
   updateTeamGrid();
   renderChartTabs(); renderChart();
   saveProgress();
+}
+
+function undoLastSale() {
+  if (saleHistory.length === 0) {
+    toast('취소할 낙찰 내역이 없습니다.');
+    return;
+  }
+  const lastSale = saleHistory.pop();
+  
+  // 팀 복구
+  const team = teams.find(t => t.name === lastSale.teamName);
+  if (team) {
+    team.money += lastSale.price;
+    team.items[lastSale.matId] = Math.max(0, (team.items[lastSale.matId] || 0) - (lastSale.qty || 1));
+  }
+  
+  // 재료 복구
+  const matIdx = materials.findIndex(m => m.id === lastSale.matId);
+  if (matIdx !== -1) {
+    materials[matIdx].soldCount = Math.max(0, materials[matIdx].soldCount - (lastSale.qty || 1));
+    curIdx = matIdx; // 해당 재료 화면으로 이동
+  }
+  
+  // 로그 복구
+  const winIdx = logs.findIndex(l => l.isWin);
+  if (winIdx !== -1) logs.splice(winIdx, 1);
+  const soldOutIdx = logs.findIndex(l => l.text.includes('매진'));
+  if (soldOutIdx === 0 || soldOutIdx === 1) logs.splice(soldOutIdx, 1);
+  
+  curBid = 1;
+  updateStage(); 
+  updateQueue();
+  updateTeamGrid();
+  renderChartTabs(); 
+  renderChart();
+  saveProgress();
+  
+  toast('↩️ 직전 낙찰이 취소되었습니다.');
+  
+  const box = document.getElementById('logBox');
+  if (box) {
+    box.innerHTML = logs.map(l =>
+      `<div class="log-row ${l.isWin ? 'win' : ''}"><span class="lt">${l.ts}</span><span class="lm">${l.text}</span></div>`
+    ).join('');
+  }
 }
 
 function skipItem() {
@@ -335,39 +396,7 @@ function addLog(text, isWin = false) {
   ).join('');
 }
 
-// ═══════════════════════════════════════
-//  TIMER
-// ═══════════════════════════════════════
-function resetTimer(sec) {
-  clearInterval(timerInterval); timerRunning = false; timerSec = sec;
-  document.getElementById('timerToggleBtn').textContent = '▶ 시작';
-  updateTimerDisplay();
-}
-function toggleTimer() {
-  if (timerRunning) {
-    clearInterval(timerInterval); timerRunning = false;
-    document.getElementById('timerToggleBtn').textContent = '▶ 재개';
-  } else {
-    timerRunning = true;
-    document.getElementById('timerToggleBtn').textContent = '⏸ 정지';
-    timerInterval = setInterval(() => {
-      timerSec--;
-      updateTimerDisplay();
-      if (timerSec <= 0) {
-        clearInterval(timerInterval); timerRunning = false;
-        document.getElementById('timerToggleBtn').textContent = '▶ 시작';
-        toast('⏰ 시간 종료!');
-      }
-    }, 1000);
-  }
-}
-function updateTimerDisplay() {
-  const el = document.getElementById('timerDisplay');
-  if (!el) return;
-  const m = Math.floor(timerSec / 60), s = timerSec % 60;
-  el.textContent = `${m}:${String(s).padStart(2, '0')}`;
-  el.classList.toggle('warn', timerSec <= 10 && timerSec > 0);
-}
+
 
 // ═══════════════════════════════════════
 //  SCORE
@@ -381,25 +410,135 @@ function renderScore() {
   const MISSION = {};
   MATERIAL_DEFAULTS.forEach(m => { if (m.missionNeed > 0) MISSION[m.id] = m.missionNeed; });
   let bestTeam = null, bestCost = Infinity;
-  const rows = teams.map(t => {
+
+  const sortedTeams = [...teams].map(t => {
     const spent = 20 - t.money;
     const ok = Object.entries(MISSION).every(([k, n]) => (t.items[k] || 0) >= n);
-    if (ok && spent < bestCost) { bestCost = spent; bestTeam = t.name; }
-    return `<tr>
-      <td><b>${t.name}</b></td><td>${t.money}</td>
-      <td>${t.items.red_brick || 0}</td><td>${t.items.iron || 0}</td><td>${t.items.blue_brick || 0}</td>
-      <td>${t.items.cement || 0}</td><td>${t.items.urethane || 0}</td><td>${t.items.plywood || 0}</td>
-      <td>${spent}</td>
-      <td>${ok ? '<span class="ms-ok">✅ 성공</span>' : '<span class="ms-fail">❌ 미달</span>'}</td>
-    </tr>`;
-  }).join('');
+    return { ...t, spent, ok };
+  });
+
+  // 정렬: 1순위 미션 성공 여부, 2순위 지출 비용 오름차순 (돈 많이 남긴 순)
+  sortedTeams.sort((a, b) => {
+    if (a.ok !== b.ok) return a.ok ? -1 : 1;
+    return a.spent - b.spent; 
+  });
+
+  if (sortedTeams.length > 0 && sortedTeams[0].ok) {
+    bestTeam = sortedTeams[0].name;
+    bestCost = sortedTeams[0].spent;
+  }
+
+  // 등수 계산 (동점자 처리 포함)
+  let rankList = [];
+  let currentRank = 1;
+  for(let i=0; i<sortedTeams.length; i++) {
+     if (!sortedTeams[i].ok) {
+         rankList.push(null);
+         continue;
+     }
+     if (i > 0 && sortedTeams[i-1].ok && sortedTeams[i].spent === sortedTeams[i-1].spent) {
+         rankList.push(rankList[i-1]);
+     } else {
+         currentRank = i + 1;
+         rankList.push(currentRank);
+     }
+  }
+
+  const topTeams = [];
+  const otherTeams = [];
+
+  sortedTeams.forEach((t, i) => {
+    const isSuccess = t.ok;
+    const teamRank = rankList[i];
+    
+    let rankHtml = '';
+    let rankClass = '';
+    if (isSuccess && teamRank) {
+       if (teamRank === 1) { rankHtml = `<span class="rank-badge r1">🥇 1등</span>`; rankClass = 'card-r1'; }
+       else if (teamRank === 2) { rankHtml = `<span class="rank-badge r2">🥈 2등</span>`; rankClass = 'card-r2'; }
+       else if (teamRank === 3) { rankHtml = `<span class="rank-badge r3">🥉 3등</span>`; rankClass = 'card-r3'; }
+       else { rankHtml = `<span class="rank-badge">👏 ${teamRank}등</span>`; }
+    }
+    
+    const missing = [];
+    Object.entries(MISSION).forEach(([k, n]) => {
+      const has = t.items[k] || 0;
+      if (has < n) {
+         const mat = MATERIAL_DEFAULTS.find(m => m.id === k);
+         missing.push(`<span class="mat-chip">${mat.emoji} ${mat.name} -${n - has}</span>`);
+      }
+    });
+
+    const extra = [];
+    ['blue_brick', 'urethane'].forEach(k => {
+      const has = t.items[k] || 0;
+      if (has > 0) {
+         const mat = MATERIAL_DEFAULTS.find(m => m.id === k);
+         extra.push(`<span class="mat-chip extra">${mat.emoji} ${mat.name} +${has}</span>`);
+      }
+    });
+
+    const missingHtml = isSuccess 
+      ? `<div style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem;">🎉 모든 필수 재료 보유</div>`
+      : `<div style="font-size:0.8rem;color:var(--red);margin-top:0.5rem;font-weight:700;">부족한 필수 재료:</div>
+         <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;">${missing.join('')}</div>`;
+
+    const extraHtml = extra.length > 0 
+      ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;">${extra.join('')}</div>`
+      : '';
+
+    const cardHtml = `
+      <div class="score-card ${isSuccess ? 'success' : ''} ${rankClass}">
+        <div class="score-card-header">
+          <div class="team-name">${t.name} ${rankHtml}</div>
+          <div class="team-status">${isSuccess ? '✅ 성공' : '❌ 미달'}</div>
+        </div>
+        <div class="score-card-body">
+          <div class="money-stat">
+            <span class="money-lbl">남은 돈</span>
+            <span class="money-val">${t.money}</span>
+          </div>
+          <div class="money-stat">
+            <span class="money-lbl">총 지출</span>
+            <span class="money-val">${t.spent}</span>
+          </div>
+        </div>
+        <div class="score-card-footer">
+          ${missingHtml}
+          ${extraHtml}
+        </div>
+      </div>
+    `;
+
+    
+    if (isSuccess && teamRank && teamRank <= 3 && topTeams.length < 3) {
+        topTeams.push(cardHtml);
+    } else {
+        otherTeams.push(cardHtml);
+    }
+  });
+
+  let podiumHtml = '';
+  if (topTeams.length > 0) {
+      const p1 = topTeams[0] ? `<div class="podium-slot p1">${topTeams[0]}</div>` : '';
+      const p2 = topTeams[1] ? `<div class="podium-slot p2">${topTeams[1]}</div>` : '';
+      const p3 = topTeams[2] ? `<div class="podium-slot p3">${topTeams[2]}</div>` : '';
+      
+      podiumHtml = `
+        <div class="podium-wrap">
+           ${p2}
+           ${p1}
+           ${p3}
+        </div>
+      `;
+  }
+
   const winnerHtml = bestTeam
     ? `<div class="winner-box"><div style="font-size:2rem;">🏆</div>
-       <div style="font-family:'Black Han Sans',sans-serif;font-size:1.5rem;color:var(--red);margin:0.3rem 0;">${bestTeam} 우승!</div>
-       <div style="color:var(--muted);font-size:0.85rem;">최저 비용 ${bestCost}어스로 미션 성공!</div></div>` : '';
-  card.innerHTML = `<div style="overflow-x:auto"><table class="score-table">
-    <thead><tr><th>팀</th><th>잔액</th><th>🧱빨간벽돌</th><th>🔩철근</th><th>🔷파란벽돌</th><th>🪨시멘트</th><th>🟡우레탄</th><th>🪵나무합판</th><th>총지출</th><th>미션</th></tr></thead>
-    <tbody>${rows}</tbody></table></div>${winnerHtml}`;
+       <div style="font-family:'Black Han Sans',sans-serif;font-size:1.5rem;color:var(--green);margin:0.3rem 0;">${bestTeam} 우승!</div>
+       <div style="color:var(--muted);font-size:0.85rem;">최저 지출 ${bestCost}어스로 미션 성공! (가장 돈을 많이 남김)</div></div>` : '';
+       
+  card.innerHTML = `${winnerHtml} ${podiumHtml} <div class="score-grid">${otherTeams.join('')}</div>`;
 }
 
 // ═══════════════════════════════════════
@@ -469,8 +608,6 @@ function doRestore(key) {
   curBid = data.curBid;
   logs = data.logs || [];
   saleHistory = data.saleHistory || [];
-
-  clearInterval(timerInterval); timerRunning = false; timerSec = 60;
 
   const setupNameInput = document.getElementById('slotNameInput');
   if (setupNameInput) setupNameInput.value = currentSlotName;
