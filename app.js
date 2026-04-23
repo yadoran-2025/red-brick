@@ -72,13 +72,13 @@ function buildSetupForm() {
   // 재료 수량 (자동 계산값 표시, 직접 수정 가능)
   document.getElementById('stockInputs').innerHTML = MATERIAL_DEFAULTS.map((m, i) => {
     const auto = rec[m.id];
-    const fixed = (m.id === 'blue_brick' || m.id === 'urethane' || m.id === 'plywood');
+    // 이제 모든 재료를 수정 가능하게 변경 (fixed 조건 제거)
     return `<div class="stock-row">
       <span class="stock-name">${m.emoji} ${m.name}</span>
       <span class="stock-auto" id="auto${i}">권장 ${auto}장</span>
       <div class="stock-input-wrap">
         <input type="number" id="mstock${i}" value="${auto}" min="1" max="99" class="auto-set"
-          ${fixed ? 'readonly' : `oninput="onStockInput(${i})"`}>
+          oninput="onStockInput(${i})">
       </div>
     </div>`;
   }).join('');
@@ -340,34 +340,50 @@ function renderChart() {
     return;
   }
 
-  const W = 320, H = 130, PL = 34, PR = 8, PT = 12, PB = 26;
-  const prices = sales.map(s => s.price);
-  const minP = Math.max(0, Math.min(...prices) - 1);
-  const maxP = Math.max(...prices) + 1;
+  // 전체 평균 단가 계산 (총액 합계 / 총 수량 합계)
+  const totalMoney = sales.reduce((sum, s) => sum + s.price, 0);
+  const totalQty = sales.reduce((sum, s) => sum + (s.qty || 1), 0);
+  const overallAvg = (totalMoney / totalQty).toFixed(1);
+
+  // 차트 데이터용 단가 배열 (각 낙찰 시점의 1장당 가격)
+  const unitPrices = sales.map(s => s.price / (s.qty || 1));
+
+  const W = 320, H = 130, PL = 34, PR = 8, PT = 24, PB = 26; // PT(Top Padding) 늘림
+  const minP = Math.max(0, Math.min(...unitPrices) - 1);
+  const maxP = Math.max(...unitPrices) + 1;
   const range = maxP - minP || 1;
   const toX = i => PL + i * (W - PL - PR) / Math.max(sales.length - 1, 1);
   const toY = p => PT + (1 - (p - minP) / range) * (H - PT - PB);
 
-  const pts = sales.map((s, i) => `${toX(i).toFixed(1)},${toY(s.price).toFixed(1)}`).join(' ');
+  const pts = sales.map((s, i) => `${toX(i).toFixed(1)},${toY(unitPrices[i]).toFixed(1)}`).join(' ');
 
   // Y축 눈금 3개
-  const yVals = [minP, Math.round((minP + maxP) / 2), maxP];
+  const yVals = [minP, (minP + maxP) / 2, maxP];
   const yGrid = yVals.map(v => {
     const y = toY(v).toFixed(1);
     return `<line x1="${PL}" y1="${y}" x2="${W - PR}" y2="${y}" stroke="#eee" stroke-width="1"/>
-            <text x="${PL - 3}" y="${(parseFloat(y) + 3.5).toFixed(1)}" text-anchor="end" font-size="9" fill="#bbb">${v}</text>`;
+            <text x="${PL - 3}" y="${(parseFloat(y) + 3.5).toFixed(1)}" text-anchor="end" font-size="9" fill="#bbb">${v.toFixed(unitPrices.some(p => p % 1 !== 0) ? 1 : 0)}</text>`;
   }).join('');
 
+  // 평균선 (Horizontal Dashed Line)
+  const avgY = toY(totalMoney / totalQty).toFixed(1);
+  const avgLine = `
+    <line x1="${PL}" y1="${avgY}" x2="${W - PR}" y2="${avgY}" stroke="var(--red)" stroke-width="1" stroke-dasharray="4,2" opacity="0.4"/>
+    <text x="${W - PR}" y="${parseFloat(avgY) - 4}" text-anchor="end" font-size="8" fill="var(--red)" font-weight="700" opacity="0.6">평균: ${overallAvg}</text>
+  `;
+
   // 면적 채우기
-  const areaPath = `${PL},${toY(sales[0].price).toFixed(1)} ${pts} ${toX(sales.length - 1).toFixed(1)},${H - PB} ${PL},${H - PB}`;
+  const areaPath = `${PL},${toY(unitPrices[0]).toFixed(1)} ${pts} ${toX(sales.length - 1).toFixed(1)},${H - PB} ${PL},${H - PB}`;
 
   // 점 + 라벨 + X축(팀명)
   const dots = sales.map((s, i) => {
-    const x = toX(i).toFixed(1), y = toY(s.price).toFixed(1);
+    const up = unitPrices[i];
+    const x = toX(i).toFixed(1), y = toY(up).toFixed(1);
     const labelY = parseFloat(y) < PT + 13 ? (parseFloat(y) + 13).toFixed(1) : (parseFloat(y) - 4).toFixed(1);
     const shortName = s.teamName.length > 3 ? s.teamName.slice(0, 3) : s.teamName;
+    const upDisplay = up % 1 === 0 ? up : up.toFixed(1);
     return `<circle cx="${x}" cy="${y}" r="4" fill="var(--red)" stroke="white" stroke-width="1.5"/>
-            <text x="${x}" y="${labelY}" text-anchor="middle" font-size="9" fill="#333" font-weight="700">${s.price}</text>
+            <text x="${x}" y="${labelY}" text-anchor="middle" font-size="9" fill="#333" font-weight="700">${upDisplay}</text>
             <text x="${x}" y="${H - 4}" text-anchor="middle" font-size="8" fill="#999">${shortName}</text>`;
   }).join('');
 
@@ -377,6 +393,7 @@ function renderChart() {
     <line x1="${PL}" y1="${H - PB}" x2="${W - PR}" y2="${H - PB}" stroke="#ddd" stroke-width="1"/>
     <polyline points="${areaPath}" fill="var(--red)" fill-opacity="0.07" stroke="none"/>
     <polyline points="${pts}" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    ${avgLine}
     ${dots}
   </svg>`;
 }
