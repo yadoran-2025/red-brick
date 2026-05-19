@@ -334,10 +334,13 @@ function setChartMat(id) {
 function renderChart() {
   const area = document.getElementById('chartArea');
   if (!area) return;
-  const sales = saleHistory.filter(s => s.matId === chartMatId);
+  area.innerHTML = renderPriceChart(chartMatId);
+}
+
+function renderPriceChart(matId, emptyText = '이 재료의 낙찰 기록이 없습니다.') {
+  const sales = saleHistory.filter(s => s.matId === matId);
   if (sales.length === 0) {
-    area.innerHTML = '<div class="no-data-msg">이 재료의 낙찰 기록이 없습니다.</div>';
-    return;
+    return `<div class="no-data-msg">${emptyText}</div>`;
   }
 
   // 전체 평균 단가 계산 (총액 합계 / 총 수량 합계)
@@ -387,7 +390,7 @@ function renderChart() {
             <text x="${x}" y="${H - 4}" text-anchor="middle" font-size="8" fill="#999">${shortName}</text>`;
   }).join('');
 
-  area.innerHTML = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
     ${yGrid}
     <line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H - PB}" stroke="#ddd" stroke-width="1"/>
     <line x1="${PL}" y1="${H - PB}" x2="${W - PR}" y2="${H - PB}" stroke="#ddd" stroke-width="1"/>
@@ -417,6 +420,49 @@ function addLog(text, isWin = false) {
 // ═══════════════════════════════════════
 //  SCORE
 // ═══════════════════════════════════════
+function renderTeamPurchaseHistory(teamName) {
+  const purchases = saleHistory.filter(s => s.teamName === teamName);
+  if (!purchases.length) {
+    return '<div class="purchase-empty">낙찰 없음</div>';
+  }
+
+  const rows = purchases.map(s => {
+    const mat = MATERIAL_DEFAULTS.find(m => m.id === s.matId) || { emoji: '📦', name: '재료' };
+    const qty = s.qty || 1;
+    return `<span class="purchase-chip">${mat.emoji} ${qty > 1 ? `${qty}장 ` : ''}${s.price}어스</span>`;
+  }).join('');
+
+  return `<div class="purchase-list">${rows}</div>`;
+}
+
+function renderTeamInventory(t) {
+  const chips = MATERIAL_DEFAULTS
+    .filter(m => (t.items[m.id] || 0) > 0)
+    .map(m => `<span class="inventory-chip">${m.emoji} ${t.items[m.id]}</span>`);
+
+  if (!chips.length) return '<div class="inventory-empty">확보 재료 없음</div>';
+  return `<div class="inventory-list">${chips.join('')}</div>`;
+}
+
+function renderAllPriceCharts() {
+  const scoreChartMaterials = MATERIAL_DEFAULTS.filter(m => !['blue_brick', 'urethane'].includes(m.id));
+  const charts = scoreChartMaterials.map(m => {
+    const sales = saleHistory.filter(s => s.matId === m.id);
+    return `<div class="score-chart-card">
+      <div class="score-chart-title">
+        <span>${m.emoji} ${m.name}</span>
+        <span>${sales.length}회</span>
+      </div>
+      <div class="score-chart-area">${renderPriceChart(m.id, '낙찰 없음')}</div>
+    </div>`;
+  }).join('');
+
+  return `<div class="score-chart-section">
+    <div class="score-chart-heading">재화별 가격 차트</div>
+    <div class="score-chart-grid">${charts}</div>
+  </div>`;
+}
+
 function renderScore() {
   const card = document.getElementById('scoreCard');
   if (!teams.length) {
@@ -503,6 +549,8 @@ function renderScore() {
       ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;">${extra.join('')}</div>`
       : '';
 
+    const purchasesHtml = renderTeamPurchaseHistory(t.name);
+
     const cardHtml = `
       <div class="score-card ${isSuccess ? 'success' : ''} ${rankClass}">
         <div class="score-card-header">
@@ -514,14 +562,18 @@ function renderScore() {
             <span class="money-lbl">남은 돈</span>
             <span class="money-val">${t.money}</span>
           </div>
-          <div class="money-stat">
-            <span class="money-lbl">총 지출</span>
-            <span class="money-val">${t.spent}</span>
+          <div class="inventory-stat">
+            <span class="money-lbl">확보 재료</span>
+            ${renderTeamInventory(t)}
           </div>
         </div>
         <div class="score-card-footer">
           ${missingHtml}
           ${extraHtml}
+          <div class="purchase-section">
+            <div class="purchase-title">입찰가</div>
+            ${purchasesHtml}
+          </div>
         </div>
       </div>
     `;
@@ -554,7 +606,7 @@ function renderScore() {
        <div style="font-family:'Black Han Sans',sans-serif;font-size:1.5rem;color:var(--green);margin:0.3rem 0;">${bestTeam} 우승!</div>
        <div style="color:var(--muted);font-size:0.85rem;">최저 지출 ${bestCost}어스로 미션 성공! (가장 돈을 많이 남김)</div></div>` : '';
        
-  card.innerHTML = `${winnerHtml} ${podiumHtml} <div class="score-grid">${otherTeams.join('')}</div>`;
+  card.innerHTML = `${winnerHtml} ${podiumHtml} <div class="score-grid">${otherTeams.join('')}</div>${renderAllPriceCharts()}`;
 }
 
 // ═══════════════════════════════════════
