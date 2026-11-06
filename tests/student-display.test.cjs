@@ -9,7 +9,7 @@ const source=['auction-state.js','app.js'].map(file=>fs.readFileSync(path.join(_
 function boot(search='',saves=[]){
   const nodes=new Map(),events={},classes=new Set(),channels=[],store=new Map(saves),writes=[],timers=new Map();let timerId=0;
   const node=selector=>{
-    if(!nodes.has(selector))nodes.set(selector,{textContent:'',innerHTML:'',value:'',hidden:false,disabled:false,style:{setProperty(){}},setAttribute(){},removeAttribute(){},addEventListener(type,fn){this[type]=fn},focus(){},select(){},showModal(){this.open=true},close(){this.open=false},reportValidity(){return true}});
+    if(!nodes.has(selector))nodes.set(selector,{textContent:'',innerHTML:'',value:'',hidden:false,disabled:false,style:{setProperty(){}},setAttribute(){},removeAttribute(){},addEventListener(type,fn){this[type]=fn},focus(){},select(){},pause(){},showModal(){this.open=true},close(){this.open=false},reportValidity(){return true}});
     return nodes.get(selector);
   };
   const location=new URL('http://localhost/'+search);
@@ -243,12 +243,18 @@ test('student popup is cancelled on undo and is not replayed from saved history'
   assert.equal(reloaded.read('studentSale'),null);
 });
 
-test('tutorial opens in a dialog, starts playback and pauses when closed',()=>{
+test('tutorial is inline on setup without autoplay and pauses when leaving',()=>{
+  const html=fs.readFileSync(path.join(__dirname,'..','index.html'),'utf8');
+  const setup=html.slice(html.indexOf('<section id="setup"'),html.indexOf('<dialog id="room-create"'));
+  assert.match(setup,/<video id="tutorial-video"[^>]*controls[^>]*playsinline/);
+  assert.match(setup,/<source src=".\/media\/tutorial.mp4"/);
+  assert.doesNotMatch(setup,/autoplay/);
+  assert.doesNotMatch(html,/id="(?:open-video|video-dialog)"/);
   const app=boot(),video=app.node('#tutorial-video');let played=0,paused=0;
   video.play=()=>{played++;return Promise.resolve()};video.pause=()=>{paused++};
-  app.node('#open-video').click();
-  assert.equal(app.node('#video-dialog').open,true);
-  assert.equal(played,1);
-  app.node('#video-dialog').close();
+  app.read("showPage('setup')");
+  assert.equal(played,0);
+  assert.equal(paused,0);
+  app.read("session.start('교실',['가팀','나팀'],recommendedStock(2));showPage('auction')");
   assert.equal(paused,1);
 });
