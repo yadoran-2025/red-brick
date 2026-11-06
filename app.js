@@ -50,7 +50,7 @@ function presentStudentSale(sale){
   hideMaterialIntro();clearTimeout(saleTimer);clearTimeout(noticeTimer);$('#announcement').textContent='';
   studentSale={room:activeSaveKey,index:session.sales.length-1,sale:latest};
   const m=materials.find(m=>m.id===latest.matId);
-  $('#student-sale').innerHTML=`<div class="sale-success-card"><p class="sale-success-heading"><span aria-hidden="true">✓</span> 낙찰 확정</p><div class="sale-success-art" aria-hidden="true"><span class="material-object ${m.id}"><i></i><i></i><i></i></span></div><div class="sale-success-details"><h2>${escapeHTML(latest.teamName)}</h2><p>${m.name} <strong>×${latest.qty}</strong></p><p class="sale-success-price">${latest.price}어스</p></div></div>`;
+  $('#student-sale').innerHTML=`<div class="sale-success-card"><p class="sale-success-heading"><span class="sale-success-check" aria-hidden="true">✓</span> 낙찰 확정</p><h2 class="sale-success-team">${escapeHTML(latest.teamName)}</h2><div class="sale-success-lot"><div class="sale-success-art" aria-hidden="true"><span class="material-object ${m.id}"><i></i><i></i><i></i></span></div><p>${m.name} <strong>×${latest.qty}</strong></p></div><div class="sale-success-price"><span>낙찰가</span><p aria-label="낙찰가 ${latest.price}어스"><strong>${latest.price}</strong><span>어스</span></p></div></div>`;
   $('#student-sale').hidden=false;
   saleTimer=setTimeout(()=>{hideStudentSale();presentStudentMaterial()},2600);
   return true;
