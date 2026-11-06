@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>빨간벽돌 — 집짓기 경매</title>
+  <title>빨간벽돌집짓기 — 재료 경매</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=blue2">
-  <link rel="stylesheet" href="style.css?v=tutorial2">
+  <link rel="stylesheet" href="style.css?v=brand1">
   <script src="auction-state.js?v=tutorial1" defer></script>
-  <script src="app.js?v=tutorial2" defer></script>
+  <script src="app.js?v=brand1" defer></script>
 </head>
 <body>
   <header class="header">
-    <a class="brand" href="#auction" aria-label="빨간벽돌 경매 화면"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>빨간벽돌</a>
+    <div class="brand-signature"><a class="brand" href="#auction" aria-label="빨간벽돌집짓기 경매 화면"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>빨간벽돌집짓기</a><span class="brand-credit">by 박찬정 선생님</span></div>
     <nav aria-label="수업 흐름">
       <button data-page="setup"><span>1</span> 수업 준비</button>
       <button data-page="auction" aria-current="page"><span>2</span> 경매</button>
@@ -54,7 +54,7 @@
         <section class="panel create-room"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><h2>새 방 만들기</h2><button id="new-room" class="button primary">새 방 만들기 <span aria-hidden="true">→</span></button></section>
         <section id="saved-sessions" class="panel saved-sessions" aria-labelledby="saved-rooms-title"><h2 id="saved-rooms-title">저장된 방 들어가기</h2><p class="room-storage-note">방과 진행 상황은 이 브라우저에 자동 저장됩니다.</p><div id="session-list"></div></section>
       </div>
-      <section class="panel tutorial-panel" aria-labelledby="video-title"><h2 id="video-title">빨간벽돌 사용법</h2><video id="tutorial-video" controls playsinline preload="metadata" aria-label="빨간벽돌 사용법 영상"><source src="./media/tutorial.mp4" type="video/mp4">영상 재생을 지원하지 않는 브라우저입니다. <a href="./media/tutorial.mp4">영상 파일 열기</a></video></section>
+      <section class="panel tutorial-panel" aria-labelledby="video-title"><h2 id="video-title">빨간벽돌집짓기 사용법</h2><video id="tutorial-video" controls playsinline preload="metadata" aria-label="빨간벽돌집짓기 사용법 영상"><source src="./media/tutorial.mp4" type="video/mp4">영상 재생을 지원하지 않는 브라우저입니다. <a href="./media/tutorial.mp4">영상 파일 열기</a></video></section>
       <dialog id="room-create" aria-labelledby="room-create-title"><div class="create-heading"><h2 id="room-create-title">새 방 만들기</h2><button id="room-list" class="button outline" type="button">닫기</button></div>
       <p id="setup-error" class="setup-error" role="alert" hidden></p>
       <form id="setup-form" class="setup-layout">
@@ -87,7 +87,7 @@
   <div id="material-intro" class="material-intro" role="status" aria-live="polite" hidden></div>
   <div id="save-error" class="save-error" role="alert" hidden><span>수업을 저장하지 못했습니다. 이 창을 닫기 전에 브라우저 저장 공간과 사이트 저장 권한을 확인하세요.</span><button id="retry-save" class="button outline">다시 저장</button></div>
   <dialog id="confirm-dialog" aria-labelledby="confirm-title"><form method="dialog"><h2 id="confirm-title"></h2><p id="confirm-message"></p><div class="dialog-actions"><button class="button outline" value="cancel" autofocus>취소</button><button id="confirm-action" class="button primary" value="confirm"></button></div></form></dialog>
-  <dialog id="guide-dialog" aria-labelledby="guide-title"><div class="guide-heading"><h2 id="guide-title">빨간 벽돌집 짓기 수업</h2><form method="dialog"><button class="button outline" aria-label="수업 안내 닫기">닫기</button></form></div>
+  <dialog id="guide-dialog" aria-labelledby="guide-title"><div class="guide-heading"><h2 id="guide-title">빨간벽돌집짓기 수업</h2><form method="dialog"><button class="button outline" aria-label="수업 안내 닫기">닫기</button></form></div>
     <p>팀당 20어스로 재료를 경매에서 구입합니다. 빨간 벽돌 2장과 철근·시멘트·나무합판 각 1장을 모아 집을 완성하세요. 집을 완성한 팀 중 지출이 가장 적은 팀이 우승합니다.</p>
     <h3>수업 흐름</h3><p>희소성 개념 학습 → 재료 경매 → 구매 결과와 선택에 대한 회고</p>
     <h3>관찰할 장면</h3><ul><li>빨간 벽돌: 필요한 2장보다 많이 사는 팀이 있나요?</li><li>철근: 공급이 충분할 때 언제 구매하면 저렴할까요?</li><li>파란 벽돌: 단 한 장뿐이지만 집짓기에는 필요하지 않습니다. 희귀성과 희소성을 비교하세요.</li><li>시멘트: 수요가 몰릴 때 가격이 어떻게 바뀌나요?</li><li>우레탄: 집짓기에는 필요하지 않습니다. 묶음으로 팔면 반응이 달라질까요?</li><li>나무합판: 팀 수보다 한 장 적습니다. 어떤 선택과 경쟁이 발생하나요?</li></ul>

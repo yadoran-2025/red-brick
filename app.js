@@ -343,7 +343,7 @@ $('.brand').addEventListener('click',event=>{event.preventDefault();showPage('au
 window.addEventListener('beforeunload',event=>{if(unsaved){event.preventDefault();event.returnValue=''}});
 renderSetup();
 if(isStudent){
-  document.title='빨간벽돌 — 학생 화면';
+  document.title='빨간벽돌집짓기 — 학생 화면';
   const room=displayParams.get('room');
   if(room?.startsWith(SAVE_PREFIX)){
     try{const raw=localStorage.getItem(room);if(raw){session.load(raw,room.slice(SAVE_PREFIX.length));activeSaveKey=room}}catch(error){announce(error.message)}

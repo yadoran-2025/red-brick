@@ -458,3 +458,19 @@ body.student-window .announcement { z-index:30; }
 .tutorial-panel { max-width:1150px; margin:28px auto 0; padding:24px; }
 .tutorial-panel h2 { font-size:22px; }
 #tutorial-video { display:block; width:100%; aspect-ratio:16/9; margin-top:16px; border-radius:10px; background:#000; }
+
+.brand-signature { display:flex; align-items:center; gap:12px; flex-shrink:0; }
+.brand { white-space:nowrap; }
+.brand-credit { color:var(--muted); font-size:13px; font-weight:500; white-space:nowrap; }
+@media(max-width:1400px) {
+  body.auction-open .brand-signature,body.reflection-open .brand-signature { flex-direction:column; align-items:flex-start; gap:0; }
+  body.auction-open .brand-credit,body.reflection-open .brand-credit { margin-left:38px; }
+}
+@media(max-width:1200px) { .header { height:auto; flex-wrap:wrap; padding-block:16px; } .header nav { order:3; width:100%; justify-content:center; } }
+@media(max-width:650px) { .brand-signature { flex-direction:column; align-items:flex-start; gap:0; } .brand-credit { margin-left:38px; } }
+@media(min-width:700px) and (max-width:1100px) and (min-height:600px) {
+  body.auction-open .header,body.reflection-open .header { padding-inline:16px; gap:8px; }
+  body.auction-open .header nav button,body.reflection-open .header nav button { padding:8px 6px; font-size:12px; gap:4px; }
+  body.auction-open .header-end,body.reflection-open .header-end { gap:8px; }
+  body.auction-open .source-link,body.reflection-open .source-link { font-size:12px; }
+}
