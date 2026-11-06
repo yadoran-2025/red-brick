@@ -232,7 +232,7 @@ function renderSavedSessions(){
     }
   }catch(error){$('#save-error').hidden=false}
   records.sort((a,b)=>b.savedAt-a.savedAt);
-  $('#session-list').innerHTML=records.map(s=>`<article class="saved-session"><div class="room-details"><h3 title="${escapeHTML(s.name)}">${escapeHTML(s.name)}</h3>${s.valid?`<p>${s.teamCount}팀 · 낙찰 ${s.saleCount}건</p>`:''}</div><div class="room-actions"><button class="button dark" data-restore="${escapeHTML(s.key)}" aria-label="${escapeHTML(s.name)} 방 들어가기" ${s.valid?'':'disabled'}>${s.valid?'들어가기':'불러오기 불가'}</button><button class="text-button" data-delete="${escapeHTML(s.key)}" aria-label="${escapeHTML(s.name)} 방 삭제">삭제</button></div></article>`).join('')||'<p class="rooms-empty">아직 만든 방이 없어요.</p>';
+  $('#session-list').innerHTML=records.map(s=>`<article class="saved-session"><button class="room-entry" data-restore="${escapeHTML(s.key)}" aria-label="${escapeHTML(s.name)} 방 들어가기" ${s.valid?'':'disabled'}><span class="brand-mark room-symbol" aria-hidden="true"><i></i><i></i><i></i></span><span class="room-name" title="${escapeHTML(s.name)}">${escapeHTML(s.name)}</span>${s.valid?`<span class="room-meta">${s.teamCount}팀 · 낙찰 ${s.saleCount}건</span>`:''}<span class="room-enter">${s.valid?'들어가기':'불러오기 불가'}<span aria-hidden="true">→</span></span></button><button class="room-delete" data-delete="${escapeHTML(s.key)}" aria-label="${escapeHTML(s.name)} 방 삭제" title="방 삭제"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5"/></svg></button></article>`).join('')||'<p class="rooms-empty">아직 만든 방이 없어요.</p>';
 }
 
 function showRoomList(){

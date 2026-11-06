@@ -247,20 +247,24 @@ body.projecting #auction .team-row[data-balance="0"] .spent-label { display:inli
 @media (min-width:1200px) { #chart-picks { grid-template-columns:repeat(6,minmax(0,1fr)); } }
 
 .room-lobby { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:18px; max-width:1150px; margin:auto; }
-.create-room,.saved-session { aspect-ratio:1; min-width:0; padding:22px; border-radius:var(--radius); }
-.create-room { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; border:2px dashed var(--red); background:var(--red-light); color:var(--red); font-size:21px; font-weight:800; }
+.create-room,.saved-session { aspect-ratio:1; min-width:0; min-height:0; border-radius:var(--radius); }
+.create-room { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:22px; border:1px dashed var(--red); background:var(--red-light); color:var(--red); font-size:20px; font-weight:700; }
 .create-room:hover { background:#f6e2dd; }
-.create-room .brand-mark { scale:1.3; }
-.create-plus { font-size:32px; line-height:1; font-weight:500; }
+.create-plus { font-size:48px; line-height:1; font-weight:400; }
 .room-storage-note { max-width:1150px; margin:0 auto 20px; font-size:15px; line-height:1.7; color:var(--muted); }
 #session-list { display:contents; }
-.saved-session { display:flex; flex-direction:column; justify-content:space-between; gap:18px; border:1px solid var(--line); background:white; }
-.room-details { min-width:0; }
-.room-details h3 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; font-size:22px; line-height:1.4; overflow-wrap:anywhere; }
-.room-details p { margin-top:10px; font-size:15px; color:var(--muted); }
-.room-actions { display:flex; gap:12px; align-items:center; flex-shrink:0; }
-.saved-session .button { flex:1; min-width:0; min-height:44px; padding:10px 12px; font-size:15px; }
-.room-actions .text-button { font-size:14px; }
+.saved-session { position:relative; border:1px solid var(--line); background:white; }
+.saved-session:has(.room-entry:not(:disabled):hover) { border-color:var(--red); }
+.room-entry { position:relative; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:44px 20px 64px; border-radius:inherit; background:white; text-align:center; }
+.room-entry:not(:disabled):hover { background:#fffafa; }
+.room-symbol { position:absolute; top:24px; left:24px; }
+.room-name { max-width:100%; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; font-size:clamp(24px,2.3vw,32px); font-weight:800; line-height:1.25; overflow-wrap:anywhere; }
+.room-meta { color:var(--muted); font-size:15px; }
+.room-enter { position:absolute; bottom:20px; left:22px; right:22px; display:flex; align-items:center; justify-content:space-between; padding-top:12px; border-top:1px solid var(--line); color:var(--red); font-size:15px; font-weight:700; }
+.room-enter>span { font-size:22px; line-height:1; }
+.room-delete { position:absolute; top:10px; right:10px; display:grid; place-items:center; width:44px; height:44px; border-radius:9px; color:var(--muted); }
+.room-delete svg { width:19px; height:19px; }
+.room-delete:hover { color:var(--red); background:var(--red-light); }
 .rooms-empty { grid-column:span 3; align-self:center; padding:24px; font-size:17px; color:var(--muted); }
 @media(max-width:900px) { .room-lobby { grid-template-columns:repeat(2,minmax(0,1fr)); } .rooms-empty { grid-column:auto; } }
 @media(max-width:480px) { .room-lobby { grid-template-columns:1fr; } }

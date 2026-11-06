@@ -273,3 +273,19 @@ test('room cards list every saved class newest first and restore the chosen clas
   assert.equal(app.read('session.slotName'),'2학년 3반');
   assert.equal(app.store.size,5);
 });
+
+test('room entry and delete are separate buttons and deleting never enters a class',()=>{
+  const first=SAVE_PREFIX+'5반',other=SAVE_PREFIX+'6반';
+  const app=boot('',[[first,JSON.stringify(savedRoom('5반'))],[other,JSON.stringify(savedRoom('6반'))]]);
+  const html=app.node('#session-list').innerHTML;
+  assert.match(html,/<button class="room-entry"/);
+  assert.match(html,/<\/button><button class="room-delete"/);
+  app.events.click({target:{closest:()=>({dataset:{delete:first},disabled:false})}});
+  assert.equal(app.read('session.teams.length'),0);
+  assert.equal(app.node('#confirm-dialog').open,true);
+  assert.equal(app.store.size,2);
+  app.node('#confirm-dialog').returnValue='confirm';
+  app.node('#confirm-dialog').close();
+  assert.equal(app.store.has(first),false);
+  assert.equal(app.store.has(other),true);
+});
