@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@700&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap');
+
+:root{--paper:#f3f5f7;--white:#fff;--ink:#202a36;--muted:#626e7c;--line:#e0e5eb;--red:#bc3d2e;--red-light:#fbefec;--blue:#3f657f;--green:#31684e;--radius:18px;font-family:'Noto Sans KR',sans-serif;color:var(--ink);background:var(--paper);font-synthesis:none}
+*{box-sizing:border-box}body{margin:0}button,input{font:inherit}button,a,input{-webkit-tap-highlight-color:transparent}button{cursor:pointer;color:inherit}button:disabled{cursor:default;opacity:.42}button,a{touch-action:manipulation}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:4px}button{transition:background .15s,transform .15s}button:not(:disabled):active{transform:translateY(1px)}a{color:inherit}h1,h2,h3,p{margin:0}h2{font-size:17px;font-weight:800}h3{font-size:15px}button{border:0;background:none}[hidden]{display:none!important}
+.header{height:90px;border-bottom:1px solid var(--line);background:white;display:flex;align-items:center;justify-content:space-between;padding:0 42px;gap:25px}.brand{display:flex;align-items:center;gap:12px;font-size:23px;font-weight:900;text-decoration:none;letter-spacing:-1.3px}.brand-mark{display:grid;grid-template-columns:13px 13px;gap:3px;transform:rotate(-7deg)}.brand-mark i{background:var(--red);height:9px;border-radius:1px}.brand-mark i:first-child{grid-column:1/3;width:22px;justify-self:center}.header nav{display:flex;gap:8px}.header nav button{display:flex;align-items:center;gap:9px;padding:11px 20px;border-radius:10px;color:var(--muted);font-weight:700;font-size:15px}.header nav button span{display:inline-grid;place-items:center;width:22px;height:22px;border:1px solid var(--line);border-radius:50%;font-size:12px}.header nav button[aria-current]{color:var(--red);background:var(--red-light)}.header nav button[aria-current] span{color:white;background:var(--red);border-color:var(--red)}.class-name{font-size:14px;font-weight:600;color:var(--muted)}
+main{max-width:1600px;margin:auto;padding:36px 42px 40px}.page-heading{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:27px}.eyebrow{font-size:14px;color:var(--muted);font-weight:600;margin-bottom:8px}h1{font-size:29px;letter-spacing:-1.4px;font-weight:800;line-height:1.45}.button{display:inline-flex;align-items:center;justify-content:center;gap:20px;min-height:46px;padding:12px 18px;border-radius:9px;font-size:15px;font-weight:700;white-space:nowrap}.outline{border:1px solid #cfd6de;background:white}.outline:hover{background:#edf0f3}.primary{background:var(--red);color:white}.primary:hover{background:#a63225}.dark{background:var(--ink);color:white}.dark:hover{background:#364456}.panel{background:white;border:1px solid var(--line);border-radius:var(--radius)}.auction-layout{display:grid;grid-template-columns:215px minmax(380px,1fr) 292px;gap:20px;align-items:start}.materials{padding:23px 12px 0;overflow:hidden}.materials>h2{padding:0 10px 20px}.material-row{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:8px;text-align:left;padding:15px 10px;width:100%;border-radius:9px;font-size:14px;min-height:58px}.material-row:hover{background:var(--paper)}.material-row[aria-pressed=true]{background:var(--red-light);color:var(--red);font-weight:800}.material-row .stock{font-size:13px;font-variant-numeric:tabular-nums}.swatch{width:24px;height:21px;display:inline-block;border-radius:3px;box-shadow:inset 0 -5px 0 #00000015;background:var(--material);vertical-align:middle}.swatch.iron{width:23px;height:11px;border-radius:4px;transform:rotate(-30deg)}.swatch.cement{height:25px;width:21px;border-radius:3px 3px 6px 6px}.swatch.plywood{background:repeating-linear-gradient(0deg,#ba9461 0 4px,#cca878 4px 5px)}.mission{margin:26px -12px 0;padding:22px;background:#fafbfc;border-top:1px solid var(--line)}.tiny-house{font-size:42px;line-height:1;color:#9ca5af;display:block;margin-bottom:12px}.mission h3{margin-bottom:9px}.mission p{font-size:13px;line-height:1.9;color:var(--muted)}
+.stage-column{display:grid;gap:16px}.stage{position:relative;overflow:hidden;text-align:center;padding:23px 30px 25px;background-color:#fff;background-image:radial-gradient(#cfd7e1 0.7px,transparent .7px);background-size:18px 18px}.stage-top{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--muted)}#remaining{color:var(--red);background:var(--red-light);padding:4px 10px;border-radius:5px;margin-top:-4px}.material-art{height:148px;position:relative;display:grid;place-items:center;margin:8px 0 2px;isolation:isolate}.material-object{position:relative;width:136px;height:64px;transform:rotate(-13deg) skewX(-10deg);border-radius:4px;background:#bc3d2e;box-shadow:10px 13px 0 #8c291f;z-index:1}.material-object:before{content:'';position:absolute;inset:-18px 0 auto 0;height:20px;background:#df7760;transform:skewX(38deg);transform-origin:bottom;border-radius:3px 3px 0 0}.material-object:after{content:'';position:absolute;right:-14px;top:-9px;width:15px;height:70px;background:#942c23;transform:skewY(43deg);z-index:-1}.material-object i{position:absolute;top:11px;width:24px;height:34px;background:#a53227;border-radius:50%;transform:rotate(15deg)}.material-object i:nth-child(1){left:15px}.material-object i:nth-child(2){left:55px}.material-object i:nth-child(3){left:95px}.art-shadow{position:absolute;width:180px;height:19px;border-radius:50%;background:#23344a12;filter:blur(5px);bottom:12px;transform:rotate(-6deg)}.material-object.blue_brick{background:#4c789f;box-shadow:10px 13px 0 #315978}.material-object.blue_brick:before{background:#87a8c6}.material-object.blue_brick:after,.material-object.blue_brick i{background:#315978}.material-object.iron{height:27px;background:repeating-linear-gradient(90deg,#657482 0 10px,#b0bac3 10px 13px);box-shadow:8px 8px 0 #45515c}.material-object.iron:before,.material-object.iron:after,.material-object.iron i,.material-object.cement i,.material-object.urethane i,.material-object.plywood i{display:none}.material-object.cement{width:94px;height:108px;background:#afb6b7;box-shadow:8px 7px 0 #777f82;border-radius:10px 10px 18px 18px}.material-object.cement:before{height:12px;top:0;background:#828c91}.material-object.cement:after{display:none}.material-object.urethane{height:45px;background:#e2bf56;box-shadow:8px 10px 0 #ac8a28}.material-object.urethane:before{background:#f1d786}.material-object.urethane:after{background:#b99b43;height:49px}.material-object.plywood{height:65px;background:repeating-linear-gradient(0deg,#b88e59 0 9px,#d9b785 9px 11px);box-shadow:9px 10px 0 #917149}.material-object.plywood:before{background:#e2c399}.material-object.plywood:after{background:#9d794c}.stage h2{font-size:27px;letter-spacing:-1px;font-weight:800}.quantity{display:flex;align-items:center;justify-content:center;gap:10px;margin:11px 0 20px;font-size:14px;color:var(--muted)}.quantity button{background:#f2f4f7;border:1px solid var(--line);border-radius:5px;width:27px;height:27px;line-height:1}.quantity strong{font-size:17px;color:var(--ink);font-variant-numeric:tabular-nums}.price{border-top:1px solid var(--line);padding-top:19px}.price>span{font-size:14px;font-weight:600;color:var(--muted)}.price>div{display:flex;align-items:baseline;justify-content:center;gap:9px;margin:0 0 20px}.price strong{font-size:91px;line-height:1.18;letter-spacing:-5px;font-weight:800;color:var(--red);font-variant-numeric:tabular-nums}.price>div>span{font-size:21px;font-weight:600;color:var(--red)}.bid-controls{display:grid;grid-template-columns:70px 1fr 70px;gap:10px;max-width:410px;margin:auto}.bid-controls .primary{justify-content:space-between;padding-inline:23px}.bid-controls .primary span{font-size:18px}.sale-panel{padding:21px 22px}.sale-heading,.sale-bottom,.section-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.text-button{font-size:13px;font-weight:600;color:var(--muted);padding:5px 0;text-underline-offset:4px}.text-button:hover{text-decoration:underline}.team-picks{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:18px 0}.team-pick{padding:12px 5px;border:1px solid var(--line);border-radius:8px;font-weight:700;font-size:14px;background:white}.team-pick[aria-pressed=true]{border-color:var(--red);background:var(--red-light);color:var(--red);box-shadow:0 0 0 1px var(--red)}.sale-bottom .dark{min-width:175px}.teams{padding:23px 20px}.section-top>span{font-size:12px;color:var(--muted)}.team-row{padding:22px 0;border-bottom:1px solid var(--line)}.team-row:last-child{border-bottom:0}.team-summary{display:flex;align-items:center;justify-content:space-between;gap:12px}.team-title{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700}.team-number{display:grid;place-items:center;width:29px;height:29px;background:var(--team-bg);color:var(--team-color);border-radius:8px;font-size:13px}.team-money{font-size:26px;font-weight:800;letter-spacing:-1px;font-variant-numeric:tabular-nums}.recent{border-top:1px solid var(--line);padding-top:23px;margin-top:14px}.recent h2{font-size:15px}.sale-log{display:grid;grid-template-columns:1fr auto;gap:4px;padding-top:16px;font-size:12px;line-height:1.6}.sale-log strong{font-weight:600}.sale-log span{color:var(--muted)}.sale-log b{grid-row:1/3;grid-column:2;align-self:center;font-size:14px;font-weight:700}.empty{padding:26px 0;color:var(--muted);font-size:14px}
+.setup-layout{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1150px;margin:auto}.setup-panel{padding:30px}.setup-panel>h2{font-size:20px;margin-bottom:26px}.setup-panel label{display:block;font-size:14px;font-weight:600;margin-bottom:9px}input{border:1px solid #cbd3dd;border-radius:8px;padding:12px;width:100%;color:var(--ink);background:#fff}input[type=number]{width:82px;padding:9px;text-align:center}.field-heading{margin:25px 0 12px}.count-picks{display:flex;gap:10px}.count-picks button,.chart-picks button{padding:10px 20px;border:1px solid var(--line);border-radius:7px;font-size:14px;font-weight:600}.count-picks button[aria-pressed=true],.chart-picks button[aria-pressed=true]{background:var(--ink);color:white;border-color:var(--ink)}.name-fields{display:grid;grid-template-columns:1fr 1fr;gap:18px 16px;margin-top:26px}.stock-table{width:100%;border-collapse:collapse;font-size:14px}.stock-table th{text-align:left;font-size:12px;color:var(--muted);font-weight:500;padding-bottom:15px;border-bottom:1px solid var(--line)}.stock-table th:last-child,.stock-table td:last-child{text-align:right}.stock-table td{padding:12px 0;border-bottom:1px solid #eef1f4}.stock-table td:first-child .swatch{margin-right:10px;transform:none}.setup-note{font-size:13px;margin:21px 0;color:var(--muted)}.start{width:100%;justify-content:space-between}.replace-note{font-size:12px;text-align:center;color:var(--muted);margin-top:13px}.results-panel{padding:27px}.results-panel>.section-top{margin-bottom:24px}.table-scroll{overflow:auto}.results-table{width:100%;border-collapse:collapse;font-size:15px;white-space:nowrap}.results-table th{font-size:13px;text-align:center;color:var(--muted);font-weight:600;padding:14px 12px;background:var(--paper)}.results-table th:first-child{text-align:left;border-radius:6px 0 0 6px}.results-table th:last-child{border-radius:0 6px 6px 0}.results-table th span{display:block;font-weight:400;margin-top:4px}.results-table td{padding:23px 12px;text-align:center;border-bottom:1px solid var(--line)}.results-table td:first-child{text-align:left}.results-table tbody tr:last-child td{border-bottom:0}.results-table .count{color:#86909c}.results-table .complete{color:var(--green);font-weight:700}.result-label{font-size:12px;background:var(--paper);padding:6px 10px;border-radius:5px}.result-label.success{background:#e8f1eb;color:var(--green)}.reflection-layout{display:grid;grid-template-columns:1.25fr 1fr;gap:24px;margin-top:24px}.chart-panel{padding:27px}.chart-picks{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 10px}.chart-picks button{font-size:12px;padding:7px 10px}.reflection{padding:28px 32px;background:#e8edf1;border-radius:var(--radius)}.question-mark{color:var(--red);font-family:'Gowun Batang',serif;font-size:47px;line-height:1;display:block;margin-bottom:8px}.reflection h2{font-family:'Gowun Batang',serif;font-size:25px;line-height:1.6;letter-spacing:-.8px}.reflection p{font-size:14px;line-height:1.9;color:#4e5a69;margin-top:10px}.reflection-rule{height:1px;background:#cdd6de;margin:23px 0}.reflection h3{font-size:14px}.announcement{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--ink);color:white;padding:14px 24px;border-radius:10px;font-size:14px;z-index:10;box-shadow:0 6px 28px #18243526}.announcement:empty{display:none}
+body.projecting .teacher-only,body.projecting .header nav,body.projecting .materials,body.projecting .quantity button,body.projecting .bid-controls{display:none}body.projecting .auction-layout{grid-template-columns:minmax(400px,1fr) 340px}body.projecting .stage{min-height:600px}body.projecting .material-art{height:220px;transform:scale(1.35)}body.projecting .stage h2{font-size:36px}body.projecting .price strong{font-size:135px}body.projecting .team-title{font-size:19px}body.projecting .team-money{font-size:36px}body.projecting .stage-top{font-size:17px}body.projecting .quantity{font-size:18px}body.projecting .teams{padding:30px}
+@media(min-width:1450px){.auction-layout{grid-template-columns:235px minmax(420px,1fr) 320px}.stage{padding:26px 40px 29px}.material-art{height:170px}.teams{padding:25px}.team-row{padding:25px 0}}
+@media(max-width:1100px){.header{padding:0 24px}.header nav button{padding:11px 12px}.class-name{font-size:12px}main{padding:28px 24px}.auction-layout{grid-template-columns:170px minmax(320px,1fr) 240px;gap:14px}.materials{padding-inline:8px}.material-row{font-size:12px;gap:4px;padding-inline:5px}.materials>h2{padding-inline:5px}.mission{margin-inline:-8px;padding:20px 13px}.mission p{font-size:12px}.teams{padding:22px 15px}.stage{padding:22px 20px}.team-picks{gap:6px}.team-pick{font-size:12px}.sale-panel{padding:19px 16px}.sale-heading .text-button{font-size:12px}h1{font-size:26px}.results-panel,.chart-panel{padding:22px}}
+@media(max-width:900px){.header{height:auto;min-height:84px;flex-wrap:wrap;padding:20px 22px 12px}.header nav{order:3;width:100%;justify-content:center}.class-name{font-size:13px}.auction-layout{grid-template-columns:1fr 255px}.materials{grid-column:1/-1;padding:10px}.materials>h2,.mission{display:none}#material-list{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}.material-row{display:flex;flex-direction:column;gap:8px;padding:10px 4px;font-size:12px}.material-row .stock{font-size:11px}.setup-panel{padding:24px}.stock-table{font-size:12px}.stock-table td:first-child .swatch{display:none}body.projecting .auction-layout{grid-template-columns:1fr 260px}body.projecting .teams{padding:22px}.page-heading{gap:10px}.page-heading .button{font-size:13px;padding:10px}.reflection-layout{grid-template-columns:1fr 1fr}.reflection{padding:25px}.reflection h2{font-size:22px}}
+@media(max-width:650px){.header{gap:12px;padding:18px 18px 12px}.brand{font-size:21px}.header nav{gap:3px;justify-content:space-between}.header nav button{padding:10px 8px;font-size:13px;gap:6px}.header nav button span{width:19px;height:19px;font-size:10px}main{padding:24px 16px}.page-heading{align-items:start;flex-direction:column;margin-bottom:19px}.eyebrow{font-size:12px}h1{font-size:24px;letter-spacing:-1px}.page-heading .button{align-self:end}.auction-layout{display:flex;flex-direction:column;gap:16px}.materials,.stage-column,.teams{width:100%}#material-list{grid-template-columns:repeat(3,1fr)}.material-row{display:grid;grid-template-columns:24px 1fr auto;font-size:12px;gap:5px;padding:10px 8px}.material-row .stock{font-size:10px}.stage{padding:22px}.material-art{height:145px}.price strong{font-size:82px}.bid-controls{grid-template-columns:62px 1fr 62px}.bid-controls .primary{padding-inline:18px}.team-picks{grid-template-columns:repeat(4,1fr)}.sale-heading h2{font-size:16px}.teams{padding:23px}.team-row{padding:18px 0}.team-money{font-size:27px}.team-title{font-size:16px}.recent{margin-top:20px}.setup-layout,.reflection-layout{grid-template-columns:1fr}.setup-panel{padding:24px}.stock-table{font-size:13px}.stock-table td:first-child .swatch{display:inline-block}.setup-panel>h2{font-size:18px}.results-panel{padding:20px 14px}.results-table{font-size:13px}.results-table th{font-size:12px}.reflection{padding:28px}.announcement{width:calc(100% - 32px);text-align:center;font-size:13px}body.projecting .auction-layout{display:flex}body.projecting .stage{min-height:520px}body.projecting .material-art{height:185px}body.projecting .price strong{font-size:100px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:650px){#material-list{grid-template-columns:repeat(2,1fr)}.material-row{font-size:13px;gap:7px}.material-row .stock{font-size:11px}}
+
+@media (min-width:700px) and (min-height:600px) {
+  body.auction-open .header { height:64px; min-height:0; flex-wrap:nowrap; padding:0 24px; gap:16px; }
+  body.auction-open .brand { font-size:21px; flex-shrink:0; }
+  body.auction-open .header nav { order:0; width:auto; gap:4px; }
+  body.auction-open .header nav button { padding:9px 12px; font-size:14px; gap:7px; white-space:nowrap; }
+  body.auction-open .class-name { font-size:12px; white-space:nowrap; }
+  body.auction-open main { height:calc(100dvh - 64px); padding:18px 24px; }
+  #auction { height:100%; display:grid; grid-template-rows:auto minmax(0,1fr); gap:16px; }
+  #auction .page-heading { margin:0; flex-direction:row; align-items:center; }
+  #auction .eyebrow { display:none; }
+  #auction h1 { font-size:24px; }
+  #auction .page-heading .button { min-height:40px; font-size:13px; padding:9px 12px; }
+  #auction .auction-layout { min-height:0; grid-template-columns:160px minmax(0,1fr) 230px; gap:12px; align-items:stretch; }
+  #auction .materials { grid-column:auto; padding:18px 10px 0; display:flex; flex-direction:column; }
+  #auction .materials>h2 { display:block; padding:0 7px 12px; }
+  #auction #material-list { display:block; }
+  #auction .material-row { display:grid; grid-template-columns:24px 1fr auto; gap:6px; min-height:44px; padding:9px 6px; font-size:13px; }
+  #auction .material-row .stock { font-size:12px; }
+  #auction .swatch { width:20px; }
+  #auction .mission { display:block; margin:auto -10px 0; padding:17px; }
+  #auction .tiny-house { display:none; }
+  #auction .mission h3 { font-size:14px; }
+  #auction .mission p { font-size:12px; }
+  #auction .stage-column { min-height:0; grid-template-rows:minmax(0,1fr) auto; gap:12px; }
+  #auction .stage { min-height:0; padding:20px; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:auto minmax(0,1fr); gap:18px; align-items:stretch; }
+  #auction .stage-top { grid-column:1/-1; font-size:12px; }
+  #auction .material-art { height:clamp(86px,16vh,150px); margin:0; width:100%; }
+  #auction .material-object { scale:.85; }
+  #auction .art-shadow { width:130px; bottom:8%; }
+  #auction #material-name { font-size:24px; }
+
+  #auction .price { border:0; padding:0; }
+  #auction .price strong { font-size:clamp(56px,8vw,96px); }
+  #auction .price>div { margin:8px 0 0; }
+  #auction .bid-controls { grid-template-columns:repeat(2,minmax(0,1fr)); width:100%; max-width:260px; gap:6px; margin:0; }
+  #auction .bid-controls .button { min-height:44px; padding:10px 4px; font-size:17px; justify-content:center; }
+  #auction .sale-panel { padding:14px 16px; }
+  #auction .sale-heading h2 { font-size:16px; }
+  #auction .team-picks { margin:12px 0; gap:7px; }
+  #auction .team-pick { padding:9px 4px; min-height:37px; font-size:13px; overflow-wrap:anywhere; }
+  #auction .sale-bottom .button { min-height:40px; min-width:0; font-size:13px; padding:10px 14px; white-space:normal; }
+  #auction .teams { min-height:0; padding:18px 16px; display:flex; flex-direction:column; }
+  #auction #team-list { flex:1; min-height:0; display:grid; grid-auto-rows:minmax(0,1fr); margin-top:8px; }
+  #auction .team-row { padding:5px 0; display:grid; grid-template-columns:1fr auto; align-content:center; gap:5px 8px; }
+  #auction .team-summary { grid-column:1/-1; line-height:1.2; }
+  #auction .team-title { font-size:14px; gap:7px; overflow-wrap:anywhere; }
+  #auction .team-number { width:24px; height:24px; flex-shrink:0; }
+  #auction .team-money { font-size:25px; }
+  #auction .recent { flex-shrink:0; padding-top:12px; margin-top:10px; }
+  #auction .sale-log { grid-template-columns:auto 1fr auto; gap:6px; padding-top:10px; font-size:12px; }
+  #auction .sale-log b { grid-column:auto; grid-row:auto; font-size:12px; }
+  body.auction-open.projecting #auction .auction-layout { grid-template-columns:minmax(0,1fr) 280px; }
+  body.auction-open.projecting #auction .materials { display:none; }
+  body.auction-open.projecting #auction .stage-column { grid-template-rows:minmax(0,1fr); }
+  body.auction-open.projecting #auction .stage { padding:28px; }
+  body.auction-open.projecting #auction .material-art { transform:none; }
+  body.auction-open.projecting #auction .material-object { scale:1.25; }
+  body.auction-open.projecting #auction #material-name { font-size:32px; }
+  body.auction-open.projecting #auction .price strong { font-size:clamp(76px,12vw,150px); }
+  body.auction-open.projecting #auction .team-money { font-size:32px; }
+  body.auction-open.projecting #auction .team-title { font-size:18px; }
+}
+@media (min-width:700px) and (max-width:1000px) and (min-height:600px) {
+  #auction .auction-layout { grid-template-columns:142px minmax(0,1fr) 210px; }
+  body.auction-open .header { gap:10px; padding-inline:18px; }
+  body.auction-open .header nav button { padding-inline:8px; font-size:13px; }
+  body.auction-open main { padding-inline:18px; }
+  #auction .stage { padding:14px; gap:8px; }
+  #auction .material-row { font-size:12px; gap:4px; }
+  #auction .material-row .stock { font-size:11px; }
+  #auction .sale-panel { padding:12px; }
+  #auction .sale-heading .text-button { font-size:11px; }
+  #auction .sale-bottom { gap:8px; }
+  #auction .sale-bottom .text-button { font-size:12px; white-space:nowrap; }
+  #auction .teams { padding-inline:12px; }
+  #auction .sale-log { font-size:11px; gap:4px; }
+  body.auction-open.projecting #auction .auction-layout { grid-template-columns:minmax(0,1fr) 250px; }
+}
+@media (min-width:700px) and (min-height:600px) and (max-height:760px) {
+
+  #auction .material-art { height:86px; }
+  #auction .material-object { scale:.65; }
+  #auction #material-name { font-size:22px; }
+
+
+  #auction .team-picks { grid-template-columns:repeat(var(--team-count),minmax(0,1fr)); gap:4px; }
+  #auction .team-pick { padding-inline:2px; font-size:12px; }
+  #auction .team-row { padding:2px 0; gap:3px 7px; }
+  #auction .team-money { font-size:22px; }
+  #auction .team-title { font-size:13px; }
+  #auction .team-number { height:22px; width:22px; }
+  #auction .mission { padding-block:12px; }
+}
+
+#auction .recent { display:flex; align-items:center; gap:12px; border:0; background:none; padding:0; margin:0 0 12px; min-height:36px; }
+#auction .recent .section-top { flex-shrink:0; flex-direction:column; align-items:start; gap:2px; }
+#auction .recent h2 { font-size:13px; }
+#auction #recent-sales { flex:1; min-width:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+#auction .recent .sale-log { display:grid; min-width:0; grid-template-columns:34px minmax(0,1fr) auto; align-items:center; padding:8px; gap:2px 6px; font-size:12px; border:1px solid #cbd4df; border-radius:8px; background:#f7f9fb; }
+#auction .recent .sale-log strong { grid-column:2; grid-row:1; overflow-wrap:anywhere; }
+#auction .recent .sale-log b { grid-column:3; grid-row:1; font-size:12px; }
+#auction .sale-thumb { grid-column:1; grid-row:1/3; width:34px; height:38px; position:relative; }
+#auction .sale-thumb .material-object { position:absolute; left:50%; top:50%; scale:1; transform:translate(-50%,-50%) rotate(-13deg) skewX(-10deg) scale(.21); }
+#auction .sale-material { grid-column:2/-1; grid-row:2; display:flex; align-items:center; flex-wrap:wrap; gap:4px; line-height:1.4; }
+#auction .sale-material .sale-qty { color:var(--ink); font-size:13px; font-weight:800; white-space:nowrap; }
+#auction .recent .empty { grid-column:1/-1; padding:0; font-size:12px; }
+body.auction-open .announcement { top:72px; bottom:auto; }
+@media (min-width:700px) and (max-height:660px) {
+  #auction .material-art { display:none; }
+  #auction .stage { padding-block:14px; gap:10px; }
+
+  #auction .price>div { margin:0; }
+
+}
+
+#auction .lot-details, #auction .bid-details { min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; }
+#auction .lot-quantity { display:grid; justify-items:center; gap:9px; }
+#auction .lot-quantity>span { font-size:13px; font-weight:600; color:var(--muted); }
+#auction .quantity { display:grid; grid-template-columns:44px minmax(48px,1fr) 44px; gap:0; margin:0; border:1px solid var(--line); border-radius:9px; background:white; }
+#auction .quantity button { width:44px; height:44px; border:0; border-radius:8px; background:var(--paper); font-size:22px; }
+#auction .quantity-value { display:flex; align-items:baseline; justify-content:center; gap:4px; padding:0 6px; font-size:14px; }
+#auction .quantity strong { font-size:22px; }
+#auction .price>div { gap:6px; }
+#auction .bid-details { border-top:1px solid var(--line); margin-top:24px; padding-top:24px; }
+#auction .bid-controls { grid-template-columns:repeat(2,minmax(0,1fr)); width:100%; max-width:260px; }
+#auction .bid-controls .button { justify-content:center; font-size:17px; }
+body.projecting #auction .quantity { display:flex; border:0; background:none; }
+body.projecting #auction .bid-controls { display:none; }
+@media (min-width:700px) and (min-height:600px) {
+  #auction .bid-details { border-top:0; border-left:1px solid var(--line); padding:0 0 0 18px; margin:0; }
+  #auction .lot-details, #auction .bid-details { gap:20px; }
+}
+@media (min-width:700px) and (max-width:780px) and (min-height:600px) {
+  #auction .auction-layout { grid-template-columns:136px minmax(0,1fr) 180px; }
+  #auction .stage { gap:10px; padding-inline:12px; }
+  #auction .bid-details { padding-left:10px; }
+  #auction .bid-controls { gap:4px; }
+  #auction .quantity { grid-template-columns:40px 44px 40px; }
+  #auction .quantity button { width:40px; }
+}
+@media (min-width:700px) and (min-height:600px) and (max-height:760px) {
+  #auction .lot-details, #auction .bid-details { gap:12px; }
+  #auction .lot-quantity { gap:6px; }
+  #auction .price strong { font-size:60px; }
+}
+@media (max-width:1000px) {
+  #auction #recent-sales { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  #auction .recent .sale-log:nth-child(n+3) { display:none; }
+  #auction .recent .sale-log { grid-template-columns:26px minmax(0,1fr) auto; gap:2px 4px; }
+  #auction .sale-thumb { width:26px; }
+  #auction .sale-thumb .material-object { transform:translate(-50%,-50%) rotate(-13deg) skewX(-10deg) scale(.17); }
+}
+.announcement { background:#245b42; max-width:calc(100% - 32px); width:max-content; text-align:center; animation:notice-arrive .16s ease-out; }
+@keyframes notice-arrive { from { opacity:0; margin-top:-6px; } to { opacity:1; margin-top:0; } }
+@media (prefers-reduced-motion:reduce) { .announcement { animation:none; } }
+
+#auction .bid-controls .button { min-height:48px; font-size:22px; padding:8px; }
+#auction .teams>.section-top { align-items:baseline; }
+#auction .teams>.section-top h2 { font-size:20px; }
+#auction .teams>.section-top>span { font-size:14px; font-weight:600; }
+#auction .team-progress { grid-column:1/-1; display:flex; align-items:center; gap:8px; margin-top:5px; }
+#auction .completion-bar { display:flex; flex:1; gap:3px; }
+#auction .completion-bar span { flex:1; height:6px; border-radius:2px; background:var(--line); }
+#auction .completion-bar .owned { background:var(--team-color); }
+#auction .completion-caption { color:var(--muted); font-size:11px; line-height:1.2; white-space:nowrap; }
+body.projecting #auction .team-progress { display:none; }
+@media (min-width:700px) and (min-height:600px) and (max-height:760px) {
+  #auction .team-progress { margin-top:0; }
+  #auction .team-money { line-height:1; }
+}
+@media (min-width:700px) and (min-height:600px) and (max-height:660px) {
+  #auction .bid-details { gap:6px; }
+  #auction .price>span { font-size:12px; line-height:1.2; }
+  #auction .price strong { font-size:44px; line-height:1; letter-spacing:-2px; }
+  #auction .bid-controls { gap:6px; }
+  #auction .bid-controls .button { min-height:44px; padding:6px; font-size:20px; }
+}
+.lot-title { display:flex; justify-content:center; align-items:baseline; flex-wrap:wrap; gap:10px; }
+#results>.reflection-layout { margin-top:0; margin-bottom:24px; }
+.lot-count { color:var(--red); font-size:32px; font-weight:800; line-height:1.2; font-variant-numeric:tabular-nums; }
+.student-only { display:none; }
+body.projecting .student-only { display:block; }
+body.projecting #auction .lot-count { font-size:42px; }
+body.projecting #auction .material-art { display:grid; }
+body.projecting #auction .team-money, body.projecting #auction .team-number, body.projecting #auction .lot-quantity { display:none; }
+body.projecting #auction .spent-label { display:none; }
+body.projecting #auction .team-row[data-balance="0"] .spent-label { display:inline-block; padding:3px 4px; border-radius:5px; color:var(--red); background:var(--red-light); font-size:12px; font-weight:700; line-height:1.4; white-space:nowrap; }
+@media (min-width:700px) and (min-height:600px) {
+  body.auction-open.projecting #auction .page-heading { justify-content:flex-end; }
+  body.auction-open.projecting #auction .auction-layout { grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr) auto; gap:14px; }
+  body.auction-open.projecting #auction .stage { grid-template-rows:minmax(0,1fr); padding:30px; background-image:none; }
+  body.auction-open.projecting #auction .lot-details { gap:16px; }
+  body.auction-open.projecting #auction .material-art { height:clamp(130px,25vh,210px); }
+  body.auction-open.projecting #auction .material-object { scale:2; }
+  body.auction-open.projecting #auction #material-name { font-size:56px; }
+  body.auction-open.projecting #auction .lot-count { font-size:64px; }
+  body.auction-open.projecting #auction .price strong { font-size:clamp(112px,16vw,192px); }
+  body.auction-open.projecting #auction .price>span { font-size:22px; }
+  body.auction-open.projecting #auction .price>div>span { font-size:32px; }
+  body.auction-open.projecting #auction .teams { display:grid; grid-template-columns:72px minmax(0,1fr); align-items:center; gap:16px; padding:16px; }
+  body.auction-open.projecting #auction #team-list { display:grid; grid-template-columns:repeat(var(--team-count),minmax(0,1fr)); grid-auto-rows:auto; gap:8px; margin:0; }
+  body.auction-open.projecting #auction .team-row { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:72px; gap:6px; padding:10px 0; border:1px solid var(--line); border-radius:9px; background:var(--paper); }
+  body.auction-open.projecting #auction .team-summary { justify-content:center; }
+  body.auction-open.projecting #auction .team-title { font-size:24px; text-align:center; }
+  body.auction-open.projecting #auction .teams>.section-top h2 { font-size:22px; }
+  body.auction-open.projecting #auction .team-row[data-balance="0"] .spent-label { max-width:100%; font-size:14px; text-align:center; white-space:normal; }
+}
+@media (min-width:700px) and (max-width:900px) and (min-height:600px) {
+  body.auction-open.projecting #auction .material-object { scale:1.5; }
+  body.auction-open.projecting #auction #material-name { font-size:44px; }
+  body.auction-open.projecting #auction .lot-count { font-size:56px; }
+  body.auction-open.projecting #auction .price>span { font-size:20px; }
+  body.auction-open.projecting #auction .price>div>span { font-size:28px; }
+  body.auction-open.projecting #auction .team-title { font-size:22px; }
+}
+
+.line-chart { margin-top:18px; }
+.line-chart svg { display:block; width:100%; height:auto; overflow:visible; }
+.chart-grid { stroke:var(--line); stroke-width:1; }
+.price-line { fill:none; stroke:var(--red); stroke-width:3; stroke-linejoin:round; stroke-linecap:round; }
+.price-point circle { fill:white; stroke:var(--red); stroke-width:3; }
+.price-point:last-child circle { fill:var(--red); }
+.point-value { fill:var(--ink); font-size:20px; font-weight:700; text-anchor:middle; }
+.chart-tick { fill:var(--muted); font-size:18px; text-anchor:middle; }
+.chart-tick[text-anchor=end] { text-anchor:end; }
+#chart-picks { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; }
+#chart-picks button { display:grid; justify-items:center; align-content:center; gap:6px; min-height:70px; padding:8px 4px; background:white; }
+#chart-picks button[aria-pressed=true] { color:var(--red); background:var(--red-light); border-color:var(--red); box-shadow:inset 0 0 0 1px var(--red); }
+#chart-picks .chart-icon { position:relative; width:40px; height:30px; }
+#chart-picks .material-object { position:absolute; left:50%; top:50%; scale:1; transform:translate(-50%,-50%) rotate(-13deg) skewX(-10deg) scale(.24); }
+@media (min-width:1200px) { #chart-picks { grid-template-columns:repeat(6,minmax(0,1fr)); } }

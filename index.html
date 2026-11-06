@@ -1,428 +1,97 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>빨간 벽돌집 짓기 — 희소성 체험 수업</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>빨간벽돌 — 집짓기 경매</title>
+  <link rel="stylesheet" href="style.css?v=reflectionfit1">
+  <script src="auction-state.js?v=reflectionfit1" defer></script>
+  <script src="app.js?v=reflectionfit1" defer></script>
 </head>
-
 <body>
-
-  <header>
-    <h1>🏠 빨간 벽돌집 짓기 <span>경매 수업</span></h1>
-    <div style="display: flex; align-items: center; gap: 1rem;">
-      <span class="badge" style="white-space: nowrap;">교사 대시보드</span>
-      <a href="https://padlet.com/parkcj99/padlet-pfg8ehn03qvt0bx" target="_blank"
-        style="background: rgba(255,255,255,0.15); color: white; padding: 6px 14px; border-radius: 20px; text-decoration: none; font-size: 0.8rem; font-weight: bold; transition: background 0.2s; white-space: nowrap;">
-        📌 자세한 사항, 추가 활동지 등은 찬정샘의 패들릿 링크(클릭)를 참고하세요.
-      </a>
-    </div>
+  <header class="header">
+    <a class="brand" href="#auction" aria-label="빨간벽돌 경매 화면"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>빨간벽돌</a>
+    <nav aria-label="수업 흐름">
+      <button data-page="setup"><span>1</span> 수업 준비</button>
+      <button data-page="auction" aria-current="page"><span>2</span> 경매</button>
+      <button data-page="results"><span>3</span> 결과</button>
+      <button data-page="reflection"><span>4</span> 회고</button>
+    </nav>
+    <div class="header-end"><a class="source-link teacher-only" href="https://padlet.com/parkcj99/padlet-pfg8ehn03qvt0bx" target="_blank" rel="noopener noreferrer">수업 출처 ↗</a><span class="class-name">수업 준비</span></div>
   </header>
 
-  <div class="tab-bar">
-    <div class="tab active" data-tab="overview">📋 수업 개요</div>
-    <div class="tab" data-tab="setup">⚙️ 수업 설정</div>
-    <div class="tab" data-tab="auction">🔨 경매 진행</div>
-    <div class="tab" data-tab="score">🏆 팀 현황</div>
-    <div class="tab" data-tab="tips">💡 교사 가이드</div>
-    <div class="tab" data-tab="questions">❓ 핵심 질문</div>
-  </div>
+  <main>
+    <p id="student-message" class="student-message" role="status" hidden></p>
+    <section id="auction" class="page">
+      <div class="page-heading"><div class="teacher-only"><p class="eyebrow">우리 반 재료 경매</p><h1>어떤 선택으로 집을 지을까?</h1></div><a id="project" class="button outline" href="#auction" target="_blank" rel="noopener">학생 화면 열기 <span aria-hidden="true">↗</span></a></div>
+      <div class="auction-layout">
+        <aside class="materials panel"><h2>경매 재료</h2><div id="material-list"></div><div class="mission"><span class="tiny-house" aria-hidden="true">⌂</span><h3>집 한 채의 조건</h3><p>빨간 벽돌 2장<br>철근 1장<br>시멘트 1장<br>나무합판 1장</p></div></aside>
 
-  <!-- ══ 1. 개요 ══ -->
-  <div id="page-overview" class="page active">
-    <div class="hero">
-      <h2>빨간 벽돌집 짓기 게임으로<br><em>희소성</em> 이해하기</h2>
-      <p>경매의 경쟁적 요소를 활용해 희소성·희귀성·시장경제 원리를 체험하는 수업입니다.</p>
-      <div class="meta-tags">
-        <span class="meta-tag"><b>대상</b> 중학교 사회2 / 고등학교 경제</span>
-        <span class="meta-tag"><b>단원</b> 경제생활의 이해</span>
-        <span class="meta-tag"><b>형태</b> 체험 수업 / 온라인 실시간</span>
-      </div>
-    </div>
-    <div class="obj-box">
-      <div class="lbl">🎯 배움 목표</div>
-      <p>희소성과 희귀성의 차이를 설명할 수 있다.</p>
-    </div>
-    <div class="card mt">
-      <div class="card-title">수업 흐름</div>
-      <div class="flow">
-        <div class="flow-step">
-          <div class="flow-num">1</div>
-          <div class="flow-lbl">도입</div>
-          <div class="flow-sub">희소성 개념 학습</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">2</div>
-          <div class="flow-lbl">전개</div>
-          <div class="flow-sub">경매 체험</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">3</div>
-          <div class="flow-lbl">정리</div>
-          <div class="flow-sub">활동지 작성</div>
-        </div>
-      </div>
-    </div>
-    <div class="grid2 mt">
-      <div class="card">
-        <div class="card-title">주요 용어</div>
-        <div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.2rem;">
-          <span
-            style="background:var(--red);color:white;padding:3px 10px;border-radius:20px;font-size:0.82rem;font-weight:700;">희소성</span>
-          <span
-            style="background:var(--blue);color:white;padding:3px 10px;border-radius:20px;font-size:0.82rem;font-weight:700;">희귀성</span>
-          <span
-            style="background:var(--ink);color:white;padding:3px 10px;border-radius:20px;font-size:0.82rem;font-weight:700;">선택</span>
-          <span
-            style="background:var(--muted);color:white;padding:3px 10px;border-radius:20px;font-size:0.82rem;font-weight:700;">기회비용</span>
-          <span
-            style="background:var(--yellow);color:var(--ink);padding:3px 10px;border-radius:20px;font-size:0.82rem;font-weight:700;">자원의
-            유한성</span>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">준비물</div>
-        <ul style="list-style:none;font-size:0.86rem;line-height:2.1;">
-          <li>📦 재료 카드 (체험 교구)</li>
-          <li>📝 학생 활동지</li>
-          <li>🎲 게임 머니 (팀당 20어스)</li>
-        </ul>
-      </div>
-    </div>
-    <div class="card mt">
-      <div class="card-title">미션 조건 — 빨간 벽돌집 짓기에 필요한 재료</div>
-      <table class="mat-table" style="margin-top:0.5rem;">
-        <thead>
-          <tr>
-            <th>재료</th>
-            <th>미션 성공 수량</th>
-            <th>총 물량</th>
-            <th>교육 포인트</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="dot" style="background:#D94530"></span>빨간 벽돌 <span class="tag-req">필수</span></td>
-            <td>2장</td>
-            <td>조 수*2 + 1장</td>
-            <td><strong>희소하지 않은 자원</strong>인데 비싸게 거래되는 이유는?</td>
-          </tr>
-          <tr>
-            <td><span class="dot" style="background:#888"></span>철근 <span class="tag-req">필수</span></td>
-            <td>1장</td>
-            <td>조 수 + 1장</td>
-            <td><strong>희소하지 않은 자원</strong>인데 비싸게 거래되는 이유는?</td>
-          </tr>
-          <tr>
-            <td><span class="dot" style="background:#1A5C9A"></span>파란 벽돌</td>
-            <td>불필요</td>
-            <td>1장 (희귀)</td>
-            <td>희귀성 ≠ 희소성</td>
-          </tr>
-          <tr>
-            <td><span class="dot" style="background:#aaa"></span>시멘트 <span class="tag-req">필수</span></td>
-            <td>1장</td>
-            <td>조 수</td>
-            <td>수요가 몰릴 때 가격이 뛰는 현상</td>
-          </tr>
-          <tr>
-            <td><span class="dot" style="background:#E8B427"></span>우레탄</td>
-            <td>불필요</td>
-            <td>20장 고정</td>
-            <td>불필요한데 희귀하지 않은 재화</td>
-          </tr>
-          <tr>
-            <td><span class="dot" style="background:#7A6A5A"></span>나무합판 <span class="tag-req">필수</span></td>
-            <td>1장</td>
-            <td>조 수 - 1장</td>
-            <td>진짜 <strong>희소한</strong> 자원 -> 진정한 의미의 가격 경쟁 발생 </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- ══ 2. 설정 ══ -->
-  <div id="page-setup" class="page">
-    <div class="sec-title">수업 설정</div>
-    <div class="grid2">
-      <div class="card">
-        <div class="card-title">팀 구성</div>
-
-        <div style="margin-bottom:1rem; padding-bottom:1rem; border-bottom:1px dashed var(--border);">
-          <label>저장 슬롯 (학급 이름)</label>
-          <input type="text" id="slotNameInput" placeholder="예: 1반, 2반" style="font-weight:700;">
-          <div style="font-size:0.75rem; color:var(--muted); margin-top:0.3rem;">💡 여기에 교시/반 이름을 적어두면 껐다 켜도 독립적으로 복구할 수
-            있습니다.</div>
+        <div class="stage-column">
+          <section class="stage panel" aria-labelledby="material-name">
+            <div class="stage-top teacher-only"><span id="round-label">첫 번째 재료</span><span id="remaining"></span></div>
+            <div class="lot-details">
+              <div class="material-art" aria-hidden="true"><div class="material-object brick"><i></i><i></i><i></i></div><span class="art-shadow"></span></div>
+              <h2 class="lot-title"><span id="material-name">빨간 벽돌</span><span id="lot-count" class="lot-count">×1</span></h2>
+              <div class="lot-quantity"><span id="quantity-label">판매 수량</span><div class="quantity" role="group" aria-labelledby="quantity-label"><button data-qty="-1" aria-label="판매 수량 줄이기">−</button><span class="quantity-value"><strong id="quantity">1</strong>장</span><button data-qty="1" aria-label="판매 수량 늘리기">+</button></div></div>
+            </div>
+            <div class="bid-details">
+              <div class="price"><span id="bid-label">현재 입찰가</span><div><strong id="bid">3</strong><span>어스</span></div></div>
+              <div class="bid-controls" role="group" aria-labelledby="bid-label"><button data-bid="-1" class="button outline" aria-label="입찰가 1어스 낮추기">−1</button><button data-bid="1" class="button primary" aria-label="입찰가 1어스 올리기">+1</button></div>
+            </div>
+          </section>
+          <section class="sale-panel panel teacher-only"><div class="sale-heading"><h2>클릭 즉시 낙찰</h2><button id="undo" class="text-button">↶ 직전 낙찰 취소</button></div><div id="team-picks" class="team-picks" role="group" aria-label="팀을 누르면 바로 낙찰"></div><div class="recent"><div class="section-top"><h2>최근 낙찰</h2><span id="sale-count"></span></div><div id="recent-sales" aria-live="polite"></div></div><div class="sale-bottom"><button id="next" class="text-button">다음 재료 →</button></div></section>
         </div>
 
-        <label>총 팀 수</label>
-        <select id="teamCount" onchange="onTeamCountChange()">
-          <option value="2">2팀</option>
-          <option value="3">3팀</option>
-          <option value="4" selected>4팀</option>
-          <option value="5">5팀</option>
-          <option value="6">6팀</option>
-          <option value="7">7팀</option>
-          <option value="8">8팀</option>
-          <option value="9">9팀</option>
-          <option value="10">10팀</option>
-        </select>
-        <div id="teamNameInputs" style="margin-top:1rem;"></div>
-        <div class="alert mt" style="margin-top:0.8rem;">팀당 시작 금액: <b>20어스</b></div>
+        <aside class="teams panel"><div class="section-top"><h2 class="teacher-only">팀별 잔액</h2><h2 class="student-only">참여 팀</h2><span class="teacher-only">어스</span></div><div id="team-list"></div></aside>
       </div>
-      <div class="card">
-        <div class="card-title">재료별 경매 수량</div>
-        <div id="stockInputs"></div>
+    </section>
+
+    <section id="setup" class="page" hidden>
+      <div class="page-heading"><div><p class="eyebrow">수업 준비</p><h1>어느 방에서 경매를 열까요?</h1></div><button id="open-guide" class="button outline">수업 안내</button></div>
+      <div id="room-lobby" class="room-lobby">
+        <section class="panel create-room"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><h2>새 방 만들기</h2><button id="new-room" class="button primary">새 방 만들기 <span aria-hidden="true">→</span></button></section>
+        <section id="saved-sessions" class="panel saved-sessions" aria-labelledby="saved-rooms-title"><h2 id="saved-rooms-title">저장된 방 들어가기</h2><p class="room-storage-note">방과 진행 상황은 이 브라우저에 자동 저장됩니다.</p><div id="session-list"></div></section>
       </div>
-    </div>
-    <div class="card mt">
-      <div class="card-title">팀 수별 권장 카드 수량 — 자동 계산 기준표</div>
-      <table class="mat-table" style="margin-top:0.4rem;font-size:0.82rem;">
-        <thead>
-          <tr>
-            <th>재료</th>
-            <th>규칙</th>
-            <th>4팀</th>
-            <th>6팀</th>
-            <th>7팀</th>
-            <th>10팀</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>🧱 빨간 벽돌</td>
-            <td style="color:var(--muted)">팀수 × 2 + 1</td>
-            <td>9</td>
-            <td>13</td>
-            <td>15</td>
-            <td>21</td>
-          </tr>
-          <tr>
-            <td>🔩 철근</td>
-            <td style="color:var(--muted)">팀수 + 1</td>
-            <td>5</td>
-            <td>7</td>
-            <td>8</td>
-            <td>11</td>
-          </tr>
-          <tr>
-            <td>🔷 파란 벽돌</td>
-            <td style="color:var(--muted)">고정 1장</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-            <td>1</td>
-          </tr>
-          <tr>
-            <td>🪨 시멘트</td>
-            <td style="color:var(--muted)">팀수 × 1</td>
-            <td>4</td>
-            <td>6</td>
-            <td>7</td>
-            <td>10</td>
-          </tr>
-          <tr>
-            <td>🟡 우레탄</td>
-            <td style="color:var(--muted)">고정 20장</td>
-            <td>20</td>
-            <td>20</td>
-            <td>20</td>
-            <td>20</td>
-          </tr>
-          <tr>
-            <td>🪵 나무합판</td>
-            <td style="color:var(--muted)">팀수 - 1</td>
-            <td>3</td>
-            <td>5</td>
-            <td>6</td>
-            <td>9</td>
-          </tr>
-        </tbody>
-      </table>
-      <div style="font-size:0.78rem;color:var(--muted);margin-top:0.6rem;">💡 팀 수 변경 시 수량 자동 갱신 | 초록 테두리 = 자동 계산값 | 직접 수정하면 흰색으로 변경</div>
-    </div>
-    <div style="margin-top:1.5rem;">
-      <button class="btn btn-red btn-lg" onclick="applySetup()">✅ 설정 완료 — 경매 시작</button>
-    </div>
-  </div>
+      <dialog id="room-create" aria-labelledby="room-create-title"><div class="create-heading"><h2 id="room-create-title">새 방 만들기</h2><button id="room-list" class="button outline" type="button">닫기</button></div>
+      <p id="setup-error" class="setup-error" role="alert" hidden></p>
+      <form id="setup-form" class="setup-layout">
+        <section class="panel setup-panel"><h2>우리 반과 팀</h2><label for="class-input">방 이름</label><input id="class-input" placeholder="예: 2학년 3반" maxlength="40" required><div class="section-top field-heading"><h3>팀 수</h3><span>팀당 20어스</span></div><div class="count-input"><label for="team-count">팀 수 직접 입력</label><input id="team-count" type="number" min="2" max="10" step="1" value="4" required></div><div id="name-fields" class="name-fields"></div></section>
+        <section class="panel setup-panel"><h2>재료 준비</h2><table class="stock-table"><thead><tr><th scope="col">재료</th><th scope="col">완성에 필요한 수량</th><th scope="col">전체 수량</th></tr></thead><tbody id="stock-fields"></tbody></table><div class="setup-note">나무합판은 팀 수보다 한 장 적게 준비합니다.</div><button class="button primary start" type="submit">방 만들고 입장 <span>→</span></button></section>
+      </form></dialog>
+    </section>
 
-  <!-- ══ 3. 경매 ══ -->
-  <div id="page-auction" class="page">
-    <!-- 팀 미설정 안내 (초기 상태) -->
-    <div id="auction-empty" style="text-align:center;padding:4rem;">
-      <div style="font-size:3rem;margin-bottom:1rem;">⚙️</div>
-      <p style="color:var(--muted);">먼저 <strong>수업 설정</strong> 탭에서 팀 구성을 완료하세요.</p>
-      <button class="btn btn-red" style="margin-top:1rem;" onclick="switchTab('setup')">설정하러 가기</button>
-    </div>
-    <!-- 실제 경매 UI (팀 설정 완료 후 표시) -->
-    <div id="auction-main" style="display:none;">
-      <!-- 저장 상태 표시 -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem;">
-        <span id="saveStatus" style="font-size:0.75rem;color:var(--muted);">💾 자동저장 대기 중</span>
-        <button onclick="saveProgress();showSaveStatus()" class="btn btn-ghost"
-          style="font-size:0.75rem;padding:3px 10px;">💾 지금 저장</button>
+    <section id="results" class="page" hidden>
+      <div class="page-heading"><div><p class="eyebrow">결과</p><h1>우리 팀의 경매 결과</h1></div><button class="button outline" data-page="auction">경매로 돌아가기 →</button></div>
+      <div class="results-chart"><section class="panel chart-panel"><div class="section-top"><h2>낙찰 단가 추이</h2><span>어스/장</span></div><div id="chart-picks" class="chart-picks" role="group" aria-label="낙찰 단가 재료 선택"></div><div id="chart"></div></section></div>
+      <section class="panel results-panel"><p id="winner" class="winner" hidden></p><div class="section-top"><h2>팀별 잔액 순위</h2><span id="results-status">현재까지의 결과</span></div><div class="table-scroll"><table class="results-table"><thead><tr><th scope="col">순위</th><th scope="col">팀</th><th scope="col">남은 어스</th><th scope="col">빨간 벽돌 <span>2장</span></th><th scope="col">철근 <span>1장</span></th><th scope="col">시멘트 <span>1장</span></th><th scope="col">나무합판 <span>1장</span></th><th scope="col">집짓기</th></tr></thead><tbody id="results-body"></tbody></table></div></section>
+      <section class="panel purchase-panel"><h2>팀별 구매 내역</h2><div id="purchase-summary"></div></section>
+    </section>
+    <section id="reflection" class="page" hidden>
+      <div class="page-heading"><div><p class="eyebrow">회고</p><h1>경매 회고</h1></div><button class="button outline" data-page="results">결과 다시 보기 →</button></div>
+      <div class="reflection-navigation" aria-label="회고 질문 이동"><button id="reflection-prev" class="button outline" disabled>← 이전 질문</button><span id="reflection-step" role="status" aria-live="polite">1 / 7</span><button id="reflection-next" class="button dark">다음 질문 →</button></div>
+      <div class="reflection-questions">
+        <article class="panel reflection-question" data-reflection-question="0"><div class="reflection-material"><span class="reflection-icon" aria-hidden="true"><span class="material-object red_brick"><i></i><i></i><i></i></span></span><span>빨간 벽돌</span></div><h2>빨간 벽돌은 몇 장 사는 게 좋았을까?</h2><p>집 한 채에는 2장이 필요하다. 3장째를 사면 우리 팀의 예산과 다른 팀의 집짓기는 어떻게 달라질까?</p><figure class="reflection-chart"><figcaption>낙찰 단가 추이 <span>어스/장</span></figcaption><div id="reflection-chart-0"></div></figure></article>
+        <article class="panel reflection-question" data-reflection-question="1" hidden><div class="reflection-material"><span class="reflection-icon" aria-hidden="true"><span class="material-object iron"><i></i><i></i><i></i></span></span><span>철근</span></div><h2>일찍 살까, 기다렸다 살까?</h2><p>처음과 나중의 철근 단가를 비교해 보자. 기다려서 사면 언제 유리하고, 어떤 위험이 생길까?</p><figure class="reflection-chart"><figcaption>낙찰 단가 추이 <span>어스/장</span></figcaption><div id="reflection-chart-1"></div></figure></article>
+        <article class="panel reflection-question" data-reflection-question="2" hidden><div class="reflection-material"><span class="reflection-icon" aria-hidden="true"><span class="material-object blue_brick"><i></i><i></i><i></i></span></span><span>파란 벽돌</span></div><h2>필요 없는데도 사고 싶을 수 있을까?</h2><p>집짓기에 필요 없는 파란 벽돌에 마음이 끌린 이유는? 나무합판과 비교해 희귀함과 희소함을 구분해 보자.</p><figure class="reflection-chart"><figcaption>낙찰 단가 추이 <span>어스/장</span></figcaption><div id="reflection-chart-2"></div></figure></article>
+        <article class="panel reflection-question" data-reflection-question="3" hidden><div class="reflection-material"><span class="reflection-icon" aria-hidden="true"><span class="material-object cement"><i></i><i></i><i></i></span></span><span>시멘트</span></div><h2>원하는 팀이 몰리면 가격은 어떻게 달라질까?</h2><p>단가가 달라진 장면을 보자. 남은 수량과 사고 싶어 한 팀 수는 가격과 경쟁에 어떤 영향을 주었을까?</p><figure class="reflection-chart"><figcaption>낙찰 단가 추이 <span>어스/장</span></figcaption><div id="reflection-chart-3"></div></figure></article>
+        <article class="panel reflection-question" data-reflection-question="4" hidden><div class="reflection-material"><span class="reflection-icon" aria-hidden="true"><span class="material-object urethane"><i></i><i></i><i></i></span></span><span>우레탄</span></div><h2>싸게 묶어 팔면, 필요 없어도 살까?</h2><p>묶음 총액 ÷ 수량으로 단가를 비교해 보자. 단가가 싸면 우리 팀에 이득인 구매라고 할 수 있을까?</p><figure class="reflection-chart"><figcaption>낙찰 단가 추이 <span>어스/장</span></figcaption><div id="reflection-chart-4"></div></figure></article>
+        <article class="panel reflection-question" data-reflection-question="5" hidden><div class="reflection-material"><span class="reflection-icon" aria-hidden="true"><span class="material-object plywood"><i></i><i></i><i></i></span></span><span>나무합판</span></div><h2>모든 팀이 살 수 없다면, 어떻게 할까?</h2><p>원하는 팀 수와 재료 수량을 비교해 보자. 부족한 재료를 어떤 전략으로 확보했고, 경쟁을 피할 방법은 없었을까?</p><figure class="reflection-chart"><figcaption>낙찰 단가 추이 <span>어스/장</span></figcaption><div id="reflection-chart-5"></div></figure></article>
+      <section class="reflection-summary" data-reflection-question="6" hidden><h2>다시 경매한다면, 어떤 선택 하나를 바꿀까?</h2><p>우리 팀의 구매 기록에서 한 장면을 골라 보자. 그 선택으로 얻은 것은 무엇이고, 포기한 대안 중 가장 가치 있었던 것은 무엇일까?</p></section>
       </div>
-      <div class="auction-wrap">
-        <!-- 왼쪽: 경매 스테이지 -->
-        <div>
-          <div class="auction-stage">
-            <div class="stage-emoji" id="stageEmoji">🧱</div>
-            <div class="stage-name" id="stageName">빨간 벽돌</div>
-            <div class="stage-stock-row">
-              <div class="stage-stock" id="stageStock">— / —</div>
-              <div class="stock-bar-wrap">
-                <div class="stock-bar-fill" id="stockBarFill" style="width:100%"></div>
-              </div>
-            </div>
-            <div style="margin-bottom:0.8rem; display:flex; justify-content:center; align-items:center; gap:0.5rem;">
-              <span style="font-size:0.75rem; color:#aaa;">판매 수량:</span>
-              <button class="btn btn-ghost" style="padding:2px 8px; color:white; border-color:#555;" onclick="changeQty(-1)">-</button>
-              <span id="qtyNum" style="font-size:1.1rem; font-weight:bold; min-width:20px;">1</span>
-              <button class="btn btn-ghost" style="padding:2px 8px; color:white; border-color:#555;" onclick="changeQty(1)">+</button>
-            </div>
-            <div class="bid-box">
-              <div class="bid-lbl">현재 입찰가</div>
-              <div class="bid-num" id="bidNum">1</div>
-              <div class="bid-unit">어스</div>
-            </div>
-            <div class="bid-row">
-              <button class="btn btn-ghost" style="color:white;border-color:#555;" onclick="changeBid(-5)">− 5</button>
-              <button class="btn btn-ghost" style="color:white;border-color:#555;" onclick="changeBid(-1)">− 1</button>
-              <button class="btn btn-red btn-lg" onclick="raiseBid()">🔺 호가 올리기 (+1)</button>
-              <button class="btn btn-ghost" style="color:white;border-color:#555;" onclick="changeBid(5)">+ 5</button>
-            </div>
-            <!-- 팀별 낙찰 버튼 -->
-            <div style="margin-top:0.8rem;">
-              <div
-                style="font-size:0.7rem;color:#888;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.5rem;">
-                🏷 낙찰 팀 선택</div>
-              <div id="teamBidBtns" style="display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center;"></div>
-            </div>
-            <div class="sell-row" style="margin-top:0.6rem;">
-              <button class="btn btn-ghost" style="color:white;border-color:#555;" onclick="skipItem()">다음 재료 →</button>
-              <button class="btn btn-ghost" style="color:#ffb3b3;border-color:#a33;" onclick="undoLastSale()">↩️ 직전 낙찰 취소</button>
-            </div>
-          </div>
-
-
-
-          <!-- 로그 -->
-          <div class="card mt">
-            <div class="card-title">경매 기록</div>
-            <div class="log-box" id="logBox">
-              <div class="log-row"><span class="lt">--:--</span><span class="lm">경매를 시작하세요.</span></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 오른쪽: 팀 잔액 + 대기열 -->
-        <div>
-          <div class="card">
-            <div class="card-title">💰 팀별 잔액 (어스)</div>
-            <div class="team-grid" id="teamGrid"></div>
-          </div>
-          <div class="card mt">
-            <div class="card-title">📦 경매 순서</div>
-            <div class="queue-list" id="queueList"></div>
-          </div>
-          <!-- 낙찰가 추이 차트 -->
-          <div class="price-chart-card mt">
-            <div class="price-chart-title">
-              <span>📈 낙찰가 추이</span>
-            </div>
-            <div class="chart-mat-tabs" id="chartTabs"></div>
-            <div class="chart-area" id="chartArea">
-              <div class="no-data-msg">낙찰이 발생하면<br>여기에 가격 추이가 표시됩니다.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══ 4. 팀별 미션 수행 현황 ══ -->
-  <div id="page-score" class="page">
-    <div class="sec-title">팀별 미션수행 현황 &amp; 결과</div>
-    <div class="card" id="scoreCard">
-      <div style="text-align:center;padding:2rem;color:var(--muted);">설정 후 경매를 진행하면 결과가 여기에 표시됩니다.</div>
-    </div>
-    <button class="btn btn-red mt" onclick="renderScore()">🔄 결과 새로고침</button>
-  </div>
-
-  <!-- ══ 5. 가이드 ══ -->
-  <div id="page-tips" class="page">
-    <div class="sec-title">교사 진행 가이드</div>
-    <div class="pb">📖 도입 단계</div>
-    <div class="tip">
-      <div class="tl">도입 이야기 예시</div>프랑스·이탈리아에서 과일은 싼데 굴 요리는 비싼 이유, 극지방에서 냉장고를 팔 수 있을까? 등 흥미로운 질문으로 시작하세요.
-    </div>
-    <div class="tip">
-      <div class="tl">핵심 개념 (학생 수준에 따라 선제공 가능)</div>
-      <b>희소성</b>: 욕구는 무한, 자원은 한정 → 선택의 문제 발생<br>
-      <b>희귀성</b>: 욕구와 무관하게 절대적 수량이 적은 것<br>
-      <b>기회비용</b>: 선택으로 인해 포기한 것의 가치
-    </div>
-    <hr style="border:none;border-top:1px solid var(--border);margin:1rem 0;">
-    <div class="pb">🔨 경매 진행 — 재료별 관찰 포인트</div>
-    <div class="tip">
-      <div class="tl">① 빨간 벽돌</div>2장만 필요한데 3장 확보하려는 팀이 생기는지 관찰. 1어스에 살 수 있는 재료를 얼마에 구매하는지 확인.
-    </div>
-    <div class="tip">
-      <div class="tl">② 철근 (5장, 공급 충분)</div>공급이 충분할 때 <em>언제 구매하면 저렴한지</em> 생각해보게 하세요.
-    </div>
-    <div class="tip">
-      <div class="tl">③ 파란 벽돌 (1장, 희귀) — 핵심!</div>미션에 <b>불필요</b>한 재료. "희소한 것과 희귀한 것이 어떻게 다를까?" 학생들이 왜 파란 벽돌을 사려 하는지 관찰.
-    </div>
-    <div class="tip">
-      <div class="tl">④ 시멘트</div>희소성이 커질수록 가격·경쟁이 어떻게 변하는지 관찰.
-    </div>
-    <div class="tip">
-      <div class="tl">⑤ 우레탄 (12장, 풍부)</div>구매 의사가 없을 때 할인 또는 묶음 판매를 시도해보세요. 12장을 1어스부터 묶어 팔면 어떻게 반응하는지 실험!
-    </div>
-    <div class="tip">
-      <div class="tl">⑥ 나무합판 (3장)</div>희소성↔가격 관계를 학생들이 발견했는지, 경쟁 회피 전략을 쓰는 학생이 있는지 관찰.
-    </div>
-
-    <div class="pb">💻 온라인 수업 전환 시</div>
-    <div class="tip">
-      <div class="tl">온라인 진행 방법</div>Zoom 화면공유 + 채팅창으로 경매 참여 / 소회의실 조별 토의<br>
-    </div>
-  </div>
-
-  <!-- ══ 6. 핵심 질문 ══ -->
-  <div id="page-questions" class="page">
-    <div class="sec-title">핵심 질문</div>
-    <div class="card">
-      <div class="card-title">토의 및 생각거리</div>
-      <div class="q-item">파란 벽돌이 얼마에 팔렸는지 생각해 보고, 명품 가방의 가격이 높은 이유에 대해 서술해 봅시다.</div>
-      <div class="q-item">매우 추운 극지방에서 냉장고는 판매할 수 있을까?</div>
-      <div class="q-item">프랑스·이탈리아에서는 왜 과일은 싼데 굴 요리는 비쌀까?</div>
-      <div class="q-item">세계에서 두 장만 남은 고가 우표가 있다. 한 장을 내가 보유하고 나머지가 경매에 나왔다면, 내 우표의 희소성을 높이려면 어떻게 해야 할까?</div>
-    </div>
-  </div>
-
-  <div id="toast"></div>
-
-  <!-- 저장 데이터 복구 모달 -->
-  <div id="restoreModal" class="modal-bg">
-    <div class="modal">
-      <h3>📂 중단된 수업 불러오기</h3>
-      <p style="font-size:0.85rem; color:var(--muted); margin-bottom:1rem; line-height:1.5;">브라우저 창이 닫히거나 이전에 완료하지 않은 수업
-        데이터가 금고에 남아있습니다. 이어서 진행할 반(슬롯)을 선택하세요.</p>
-      <div id="restoreSlotList"
-        style="display:flex;flex-direction:column;gap:0.6rem;max-height:300px;overflow-y:auto;margin-bottom:1rem;padding-right:0.4rem;">
-      </div>
-      <div class="modal-actions" style="margin-top:0; padding-top:0.8rem; border-top:1px solid var(--border);">
-        <button class="btn btn-ghost" onclick="closeRestoreModal()">다른 경매 시작하기</button>
-      </div>
-    </div>
-  </div>
-
-
-  <script src="app.js"></script>
+    </section>
+  </main>
+  <div id="material-intro" class="material-intro" role="status" aria-live="polite" hidden></div>
+  <div id="save-error" class="save-error" role="alert" hidden><span>수업을 저장하지 못했습니다. 이 창을 닫기 전에 브라우저 저장 공간과 사이트 저장 권한을 확인하세요.</span><button id="retry-save" class="button outline">다시 저장</button></div>
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title"><form method="dialog"><h2 id="confirm-title"></h2><p id="confirm-message"></p><div class="dialog-actions"><button class="button outline" value="cancel" autofocus>취소</button><button id="confirm-action" class="button primary" value="confirm"></button></div></form></dialog>
+  <dialog id="guide-dialog" aria-labelledby="guide-title"><div class="guide-heading"><h2 id="guide-title">빨간 벽돌집 짓기 수업</h2><form method="dialog"><button class="button outline" aria-label="수업 안내 닫기">닫기</button></form></div>
+    <p>팀당 20어스로 재료를 경매에서 구입합니다. 빨간 벽돌 2장과 철근·시멘트·나무합판 각 1장을 모아 집을 완성하세요. 집을 완성한 팀 중 지출이 가장 적은 팀이 우승합니다.</p>
+    <h3>수업 흐름</h3><p>희소성 개념 학습 → 재료 경매 → 구매 결과와 선택에 대한 회고</p>
+    <h3>관찰할 장면</h3><ul><li>빨간 벽돌: 필요한 2장보다 많이 사는 팀이 있나요?</li><li>철근: 공급이 충분할 때 언제 구매하면 저렴할까요?</li><li>파란 벽돌: 단 한 장뿐이지만 집짓기에는 필요하지 않습니다. 희귀성과 희소성을 비교하세요.</li><li>시멘트: 수요가 몰릴 때 가격이 어떻게 바뀌나요?</li><li>우레탄: 집짓기에는 필요하지 않습니다. 묶음으로 팔면 반응이 달라질까요?</li><li>나무합판: 팀 수보다 한 장 적습니다. 어떤 선택과 경쟁이 발생하나요?</li></ul>
+    <h3>핵심 질문</h3><ul><li>파란 벽돌 가격과 명품 가방의 높은 가격은 어떤 관련이 있을까요?</li><li>매우 추운 극지방에서 냉장고를 판매할 수 있을까요?</li><li>프랑스·이탈리아에서는 왜 과일은 싼데 굴 요리는 비쌀까요?</li><li>세계에 두 장만 남은 우표 중 하나를 가지고 있다면, 나머지 우표의 경매에서 어떤 선택을 할까요?</li></ul>
+    <p>희소성은 욕구에 비해 자원이 부족한 상태, 희귀성은 절대적인 수량이 적은 상태입니다. 선택으로 포기한 것의 가치를 기회비용과 연결해 보세요.</p>
+    <p><a href="https://padlet.com/parkcj99/padlet-pfg8ehn03qvt0bx" target="_blank" rel="noopener noreferrer">찬정샘의 수업 자료·활동지</a></p>
+  </dialog>
+  <p id="announcement" class="announcement" role="status" aria-live="polite"></p>
 </body>
-
 </html>

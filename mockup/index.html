@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>빨간벽돌 — 수업 목업</title>
+  <link rel="stylesheet" href="style.css?v=4">
+  <script src="app.js?v=4" defer></script>
+</head>
+<body>
+  <header class="header">
+    <a class="brand" href="#auction" aria-label="빨간벽돌 경매 화면"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>빨간벽돌</a>
+    <nav aria-label="수업 흐름">
+      <button data-page="setup"><span>1</span> 수업 준비</button>
+      <button data-page="auction" aria-current="page"><span>2</span> 경매</button>
+      <button data-page="results"><span>3</span> 결과·회고</button>
+    </nav>
+    <span class="class-name">2학년 3반 · 예시</span>
+  </header>
+
+  <main>
+    <section id="auction" class="page">
+      <div class="page-heading"><div class="teacher-only"><p class="eyebrow">우리 반 재료 경매</p><h1>어떤 선택으로 집을 지을까?</h1></div><button id="project" class="button outline">학생 화면 보기 <span aria-hidden="true">↗</span></button></div>
+      <div class="auction-layout">
+        <aside class="materials panel"><h2>경매 재료</h2><div id="material-list"></div><div class="mission"><span class="tiny-house" aria-hidden="true">⌂</span><h3>집 한 채의 조건</h3><p>빨간 벽돌 2장<br>철근 1장<br>시멘트 1장<br>나무합판 1장</p></div></aside>
+
+        <div class="stage-column">
+          <section class="stage panel" aria-labelledby="material-name">
+            <div class="stage-top teacher-only"><span id="round-label">첫 번째 재료</span><span id="remaining"></span></div>
+            <div class="lot-details">
+              <div class="material-art" aria-hidden="true"><div class="material-object brick"><i></i><i></i><i></i></div><span class="art-shadow"></span></div>
+              <h2 class="lot-title"><span id="material-name">빨간 벽돌</span><span id="lot-count" class="lot-count">×1</span></h2>
+              <div class="lot-quantity"><span id="quantity-label">판매 수량</span><div class="quantity" role="group" aria-labelledby="quantity-label"><button data-qty="-1" aria-label="판매 수량 줄이기">−</button><span class="quantity-value"><strong id="quantity">1</strong>장</span><button data-qty="1" aria-label="판매 수량 늘리기">+</button></div></div>
+            </div>
+            <div class="bid-details">
+              <div class="price"><span id="bid-label">현재 입찰가</span><div><strong id="bid">3</strong><span>어스</span></div></div>
+              <div class="bid-controls" role="group" aria-labelledby="bid-label"><button data-bid="-1" class="button outline" aria-label="입찰가 1어스 낮추기">−1</button><button data-bid="1" class="button primary" aria-label="입찰가 1어스 올리기">+1</button></div>
+            </div>
+          </section>
+          <section class="sale-panel panel teacher-only"><div class="sale-heading"><h2>낙찰 팀</h2><button id="undo" class="text-button">↶ 직전 낙찰 취소</button></div><div id="team-picks" class="team-picks" role="group" aria-label="낙찰 팀 선택"></div><div class="recent"><div class="section-top"><h2>최근 낙찰</h2><span id="sale-count"></span></div><div id="recent-sales" aria-live="polite"></div></div><div class="sale-bottom"><button id="next" class="text-button">다음 재료 →</button><button id="sell" class="button dark" disabled>팀을 선택하세요</button></div></section>
+        </div>
+
+        <aside class="teams panel"><div class="section-top"><h2 class="teacher-only">팀별 잔액</h2><h2 class="student-only">참여 팀</h2><span class="teacher-only">어스</span></div><div id="team-list"></div></aside>
+      </div>
+    </section>
+
+    <section id="setup" class="page" hidden>
+      <div class="page-heading"><div><p class="eyebrow">수업 준비</p><h1>오늘의 경매를 열어볼까요?</h1></div></div>
+      <form id="setup-form" class="setup-layout">
+        <section class="panel setup-panel"><h2>우리 반과 팀</h2><label for="class-input">학급 이름</label><input id="class-input" value="2학년 3반" maxlength="40" required><div class="section-top field-heading"><h3>팀 수</h3><span>팀당 20어스</span></div><div class="count-picks" role="group" aria-label="팀 수"><button type="button" data-count="4" aria-pressed="true">4팀</button><button type="button" data-count="6" aria-pressed="false">6팀</button><button type="button" data-count="8" aria-pressed="false">8팀</button></div><div id="name-fields" class="name-fields"></div></section>
+        <section class="panel setup-panel"><h2>재료 준비</h2><table class="stock-table"><thead><tr><th scope="col">재료</th><th scope="col">집 한 채</th><th scope="col">전체 수량</th></tr></thead><tbody id="stock-fields"></tbody></table><div class="setup-note">나무합판은 팀 수보다 한 장 적게 준비합니다.</div><button class="button primary start" type="submit">이 설정으로 새 경매 시작 <span>→</span></button><p class="replace-note">현재 예시 경매를 새 경매로 바꿉니다.</p></section>
+      </form>
+    </section>
+
+    <section id="results" class="page" hidden>
+      <div class="page-heading"><div><p class="eyebrow">결과·회고</p><h1>우리가 산 것은 재료였을까, 기회였을까?</h1></div><button class="button outline" data-page="auction">경매로 돌아가기 →</button></div>
+      <div class="reflection-layout"><section class="panel chart-panel"><div class="section-top"><h2>낙찰 단가 추이</h2><span>어스/장</span></div><div id="chart-picks" class="chart-picks" role="group" aria-label="낙찰 단가 재료 선택"></div><div id="chart"></div></section><section class="reflection"><span class="question-mark" aria-hidden="true">?</span><h2>하나뿐인 파란 벽돌은<br>정말 필요했을까?</h2><p>희귀한 것과 희소한 것은 어떻게 다를까?</p><div class="reflection-rule"></div><h3>우리 팀의 선택을 돌아보면</h3><p>다시 경매한다면, 무엇을 다르게 살까?<br>그 선택으로 무엇을 포기해야 할까?</p></section></div>
+      <section class="panel results-panel"><div class="section-top"><h2>우리 팀의 집짓기</h2><span id="results-status">현재까지의 결과</span></div><div class="table-scroll"><table class="results-table"><thead><tr><th scope="col">팀</th><th scope="col">빨간 벽돌 <span>2장</span></th><th scope="col">철근 <span>1장</span></th><th scope="col">시멘트 <span>1장</span></th><th scope="col">나무합판 <span>1장</span></th><th scope="col">남은 어스</th><th scope="col">집짓기</th></tr></thead><tbody id="results-body"></tbody></table></div></section>
+    </section>
+  </main>
+  <p id="announcement" class="announcement" role="status" aria-live="polite"></p>
+</body>
+</html>
