@@ -18,7 +18,7 @@ function boot(search='',saves=[]){
     document:{title:'',querySelector:node,querySelectorAll:()=>[],addEventListener:(type,fn)=>events[type]=fn,body:{classList:{toggle(name,on){if(on)classes.add(name);else classes.delete(name)},add:name=>classes.add(name)}}},
     history:{replaceState(_state,_title,url){location.href=new URL(url,location).href}},
     sessionStorage:{getItem:()=>null,setItem(){}},
-    localStorage:{getItem:key=>store.get(key)??null,setItem(key,value){store.set(key,value);writes.push(key)}},
+    localStorage:{get length(){return store.size},key:i=>[...store.keys()][i]??null,getItem:key=>store.get(key)??null,setItem(key,value){store.set(key,value);writes.push(key)},removeItem:key=>store.delete(key)},
     BroadcastChannel:class {constructor(name){this.name=name;this.messages=[];channels.push(this)}postMessage(message){this.messages.push(structuredClone(message))}},
     window:{addEventListener(){}},
     setTimeout(fn,ms){timers.set(++timerId,{fn,ms});return timerId},clearTimeout(id){timers.delete(id)}
@@ -257,4 +257,19 @@ test('tutorial is inline on setup without autoplay and pauses when leaving',()=>
   assert.equal(paused,0);
   app.read("session.start('교실',['가팀','나팀'],recommendedStock(2));showPage('auction')");
   assert.equal(paused,1);
+});
+
+test('room cards list every saved class newest first and restore the chosen class',()=>{
+  const saves=Array.from({length:5},(_,i)=>{
+    const name=`2학년 ${i+1}반`,snapshot=savedRoom(name);
+    snapshot.savedAt=`2026-11-0${i+1}T00:00:00Z`;
+    return [SAVE_PREFIX+name,JSON.stringify(snapshot)];
+  });
+  const app=boot('',saves),html=app.node('#session-list').innerHTML;
+  assert.equal((html.match(/class="saved-session"/g)||[]).length,5);
+  assert.ok(html.indexOf('2학년 5반')<html.indexOf('2학년 1반'));
+  assert.equal(app.writes.length,0);
+  app.events.click({target:{closest:()=>({dataset:{restore:saves[2][0]},disabled:false})}});
+  assert.equal(app.read('session.slotName'),'2학년 3반');
+  assert.equal(app.store.size,5);
 });

@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>빨간벽돌집짓기 — 재료 경매</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=blue2">
-  <link rel="stylesheet" href="style.css?v=brand1">
+  <link rel="stylesheet" href="style.css?v=rooms1">
   <script src="auction-state.js?v=tutorial1" defer></script>
-  <script src="app.js?v=brand1" defer></script>
+  <script src="app.js?v=rooms1" defer></script>
 </head>
 <body>
   <header class="header">
@@ -50,9 +50,10 @@
 
     <section id="setup" class="page" hidden>
       <div class="page-heading"><div><p class="eyebrow">수업 준비</p><h1>어느 방에서 경매를 열까요?</h1></div><button id="open-guide" class="button outline">수업 안내</button></div>
+      <p class="room-storage-note">방과 진행 상황은 이 브라우저에 자동 저장됩니다.</p>
       <div id="room-lobby" class="room-lobby">
-        <section class="panel create-room"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><h2>새 방 만들기</h2><button id="new-room" class="button primary">새 방 만들기 <span aria-hidden="true">→</span></button></section>
-        <section id="saved-sessions" class="panel saved-sessions" aria-labelledby="saved-rooms-title"><h2 id="saved-rooms-title">저장된 방 들어가기</h2><p class="room-storage-note">방과 진행 상황은 이 브라우저에 자동 저장됩니다.</p><div id="session-list"></div></section>
+        <button id="new-room" class="panel create-room"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>새 방 만들기</span><span class="create-plus" aria-hidden="true">+</span></button>
+        <div id="session-list"></div>
       </div>
       <section class="panel tutorial-panel" aria-labelledby="video-title"><h2 id="video-title">빨간벽돌집짓기 사용법</h2><video id="tutorial-video" controls playsinline preload="metadata" aria-label="빨간벽돌집짓기 사용법 영상"><source src="./media/tutorial.mp4" type="video/mp4">영상 재생을 지원하지 않는 브라우저입니다. <a href="./media/tutorial.mp4">영상 파일 열기</a></video></section>
       <dialog id="room-create" aria-labelledby="room-create-title"><div class="create-heading"><h2 id="room-create-title">새 방 만들기</h2><button id="room-list" class="button outline" type="button">닫기</button></div>

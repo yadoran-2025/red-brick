@@ -232,7 +232,7 @@ function renderSavedSessions(){
     }
   }catch(error){$('#save-error').hidden=false}
   records.sort((a,b)=>b.savedAt-a.savedAt);
-  $('#session-list').innerHTML=records.map(s=>`<article class="saved-session"><div class="room-details"><h3>${escapeHTML(s.name)}</h3>${s.valid?`<p>${s.teamCount}팀 · 낙찰 ${s.saleCount}건</p>`:''}</div><div class="room-actions"><button class="button dark" data-restore="${escapeHTML(s.key)}" aria-label="${escapeHTML(s.name)} 방 들어가기" ${s.valid?'':'disabled'}>${s.valid?'들어가기':'불러오기 불가'}</button><button class="text-button" data-delete="${escapeHTML(s.key)}" aria-label="${escapeHTML(s.name)} 방 삭제">삭제</button></div></article>`).join('')||'<p class="rooms-empty">아직 만든 방이 없어요.</p>';
+  $('#session-list').innerHTML=records.map(s=>`<article class="saved-session"><div class="room-details"><h3 title="${escapeHTML(s.name)}">${escapeHTML(s.name)}</h3>${s.valid?`<p>${s.teamCount}팀 · 낙찰 ${s.saleCount}건</p>`:''}</div><div class="room-actions"><button class="button dark" data-restore="${escapeHTML(s.key)}" aria-label="${escapeHTML(s.name)} 방 들어가기" ${s.valid?'':'disabled'}>${s.valid?'들어가기':'불러오기 불가'}</button><button class="text-button" data-delete="${escapeHTML(s.key)}" aria-label="${escapeHTML(s.name)} 방 삭제">삭제</button></div></article>`).join('')||'<p class="rooms-empty">아직 만든 방이 없어요.</p>';
 }
 
 function showRoomList(){
