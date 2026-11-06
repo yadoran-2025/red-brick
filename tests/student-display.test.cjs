@@ -242,3 +242,13 @@ test('student popup is cancelled on undo and is not replayed from saved history'
   const reloaded=boot('?student=1&display=test-display&room='+encodeURIComponent(key),[[key,snapshot]]);
   assert.equal(reloaded.read('studentSale'),null);
 });
+
+test('tutorial opens in a dialog, starts playback and pauses when closed',()=>{
+  const app=boot(),video=app.node('#tutorial-video');let played=0,paused=0;
+  video.play=()=>{played++;return Promise.resolve()};video.pause=()=>{paused++};
+  app.node('#open-video').click();
+  assert.equal(app.node('#video-dialog').open,true);
+  assert.equal(played,1);
+  app.node('#video-dialog').close();
+  assert.equal(paused,1);
+});

@@ -454,3 +454,8 @@ body.student-window .announcement { z-index:30; }
 @keyframes sale-success-arrive { from { opacity:0; transform:translateY(16px) scale(.96); } to { opacity:1; transform:none; } }
 @media(max-width:650px),(max-height:600px) { .sale-success-card { padding:24px; gap:16px; } .sale-success-heading { font-size:22px; } .sale-success-team { font-size:52px; } .sale-success-lot { gap:10px; padding:12px; } .sale-success-art { width:90px; height:72px; } .sale-success-art .material-object { transform:translate(-50%,-50%) rotate(-13deg) skewX(-10deg) scale(.58); } .sale-success-lot p { font-size:24px; } .sale-success-price strong { font-size:48px; } .sale-success-price p span { font-size:24px; } }
 @media(prefers-reduced-motion:reduce) { .sale-success-card { animation:none; } }
+
+.heading-actions { display:flex; flex-wrap:wrap; gap:10px; }
+#video-dialog { width:min(1120px,calc(100% - 32px)); padding:20px; }
+#tutorial-video { display:block; width:100%; max-height:calc(100dvh - 150px); margin-top:16px; border-radius:10px; background:#000; }
+@media(max-width:650px) { .heading-actions { align-self:flex-end; } .heading-actions .button { font-size:14px; padding:10px 12px; } }

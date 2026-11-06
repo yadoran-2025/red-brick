@@ -338,6 +338,11 @@ $('#setup-form').addEventListener('submit',event=>{
 });
 $('#retry-save').addEventListener('click',()=>{if(saveProgress())announce('수업 기록을 저장했습니다.')});
 $('#open-guide').addEventListener('click',()=>$('#guide-dialog').showModal());
+$('#open-video').addEventListener('click',()=>{
+  $('#video-dialog').showModal();
+  $('#tutorial-video').play().catch(()=>$('#tutorial-video').focus());
+});
+$('#video-dialog').addEventListener('close',()=>$('#tutorial-video').pause());
 $('.brand').addEventListener('click',event=>{event.preventDefault();showPage('auction')});
 window.addEventListener('beforeunload',event=>{if(unsaved){event.preventDefault();event.returnValue=''}});
 renderSetup();
