@@ -35,6 +35,7 @@ test('one team click sells once, saves, broadcasts and undo restores funds',()=>
   assert.equal(app.read('session.sales.length'),1);
   assert.equal(app.read('session.teams[0].money'),17);
   assert.equal(app.channels[0].messages.at(-1).state.saleHistory[0].qty,2);
+  assert.equal(app.channels[0].messages.at(-1).sale.qty,2);
   assert.equal(JSON.parse(app.store.get(SAVE_PREFIX+'교실')).teams[0].money,17);
   assert.match(app.node('#announcement').textContent,/1팀 낙찰 확정/);
   assert.equal(app.nodes.has('#sell'),false);
@@ -195,4 +196,49 @@ test('reflection shows one question at a time with bounded previous and next nav
   assert.equal(questions[6].hidden,true);
   for(let i=0;i<10;i++)app.node('#reflection-prev').click();
   assert.equal(app.node('#reflection-step').textContent,'1 / 7');
+});
+
+test('student sale popup shows confirmed sale, dismisses itself and defers next material intro',()=>{
+  const initial=savedRoom('가반'),key=SAVE_PREFIX+'가반';
+  const student=boot('?student=1&display=test-display&room='+encodeURIComponent(key),[[key,JSON.stringify(initial)]]);
+  student.timers.get(student.read('introTimer')).fn();
+  const teacher=new AuctionSession();teacher.load(JSON.stringify(initial));
+  teacher.materials[0].stock=1;teacher.bid=3;
+  const sale=teacher.sell(0);
+  student.channels[0].onmessage({data:{type:'state',key,state:teacher.snapshot(),sale,notice:'낙찰 확정'}});
+  const popup=student.node('#student-sale');
+  assert.equal(popup.hidden,false);
+  assert.match(popup.innerHTML,/낙찰 확정/);
+  assert.match(popup.innerHTML,/1팀/);
+  assert.match(popup.innerHTML,/빨간 벽돌/);
+  assert.match(popup.innerHTML,/×1/);
+  assert.match(popup.innerHTML,/3어스/);
+  assert.equal(student.node('#material-intro').hidden,true);
+  assert.equal(student.node('#announcement').textContent,'');
+  const timer=student.read('saleTimer');
+  teacher.bid=4;
+  student.channels[0].onmessage({data:{type:'state',key,state:teacher.snapshot()}});
+  assert.equal(student.read('saleTimer'),timer);
+  student.timers.get(timer).fn();
+  assert.equal(popup.hidden,true);
+  assert.equal(student.node('#material-intro').hidden,false);
+  assert.match(student.node('#material-intro').innerHTML,/철근/);
+});
+
+test('student popup is cancelled on undo and is not replayed from saved history',()=>{
+  const initial=savedRoom('가반'),key=SAVE_PREFIX+'가반';
+  const student=boot('?student=1&display=test-display&room='+encodeURIComponent(key),[[key,JSON.stringify(initial)]]);
+  const teacher=new AuctionSession();teacher.load(JSON.stringify(initial));
+  const sale=teacher.sell(1),snapshot=JSON.stringify(teacher.snapshot());
+  student.channels[0].onmessage({data:{type:'state',key,state:teacher.snapshot(),sale}});
+  assert.equal(student.node('#student-sale').hidden,false);
+  const timer=student.read('saleTimer');
+  teacher.undo();
+  student.channels[0].onmessage({data:{type:'state',key,state:teacher.snapshot(),notice:'낙찰 취소'}});
+  assert.equal(student.node('#student-sale').hidden,true);
+  assert.equal(student.timers.has(timer),false);
+  student.channels[0].onmessage({data:{type:'state',key,state:teacher.snapshot(),sale:{...sale,teamName:'가짜팀'}}});
+  assert.equal(student.node('#student-sale').hidden,true);
+  const reloaded=boot('?student=1&display=test-display&room='+encodeURIComponent(key),[[key,snapshot]]);
+  assert.equal(reloaded.read('studentSale'),null);
 });

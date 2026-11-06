@@ -7,7 +7,7 @@ let chartMaterial=0, reflectionIndex=0, setupCount=4, noticeTimer, activeSaveKey
 
 const displayParams=new URLSearchParams(location.search);
 const isStudent=displayParams.get('student')==='1';
-let displayId=displayParams.get('display'), studentMaterial=null, introTimer;
+let displayId=displayParams.get('display'), studentMaterial=null, introTimer, studentSale=null, saleTimer;
 if(!isStudent){
   try{displayId=sessionStorage.getItem('auction_display_id')||crypto.randomUUID();sessionStorage.setItem('auction_display_id',displayId)}
   catch(error){displayId=crypto.randomUUID()}
@@ -26,6 +26,7 @@ function hideMaterialIntro(){
   $('#material-intro').hidden=true;
 }
 function presentStudentMaterial(){
+  if(!isStudent||studentSale||!session.teams.length)return;
   const key=JSON.stringify([activeSaveKey||session.slotName,session.current]);
   if(key===studentMaterial)return;
   studentMaterial=key;
@@ -37,9 +38,27 @@ function presentStudentMaterial(){
   introTimer=setTimeout(hideMaterialIntro,2400);
 }
 
-function publishDisplay(notice=''){
+function matchesSale(a,b){
+  return Boolean(a&&b&&['matId','teamName','qty','price','teamIndex'].every(key=>a[key]===b[key]));
+}
+function hideStudentSale(){
+  clearTimeout(saleTimer);studentSale=null;$('#student-sale').hidden=true;
+}
+function presentStudentSale(sale){
+  const latest=session.sales[session.sales.length-1];
+  if(!isStudent||!matchesSale(sale,latest))return false;
+  hideMaterialIntro();clearTimeout(saleTimer);clearTimeout(noticeTimer);$('#announcement').textContent='';
+  studentSale={room:activeSaveKey,index:session.sales.length-1,sale:latest};
+  const m=materials.find(m=>m.id===latest.matId);
+  $('#student-sale').innerHTML=`<div class="sale-success-card"><p class="sale-success-heading"><span aria-hidden="true">✓</span> 낙찰 확정</p><div class="sale-success-art" aria-hidden="true"><span class="material-object ${m.id}"><i></i><i></i><i></i></span></div><div class="sale-success-details"><h2>${escapeHTML(latest.teamName)}</h2><p>${m.name} <strong>×${latest.qty}</strong></p><p class="sale-success-price">${latest.price}어스</p></div></div>`;
+  $('#student-sale').hidden=false;
+  saleTimer=setTimeout(()=>{hideStudentSale();presentStudentMaterial()},2600);
+  return true;
+}
+
+function publishDisplay(notice='',sale=null){
   if(isStudent)return;
-  displayChannel?.postMessage({type:'state',key:activeSaveKey,state:session.teams.length?session.snapshot():null,notice});
+  displayChannel?.postMessage({type:'state',key:activeSaveKey,state:session.teams.length?session.snapshot():null,notice,sale});
 }
 function receiveDisplay(data){
   if(data?.type!=='state')return;
@@ -51,9 +70,11 @@ function receiveDisplay(data){
       else url.searchParams.delete('room');
       history.replaceState(null,'',url);
     }else{Object.assign(session,new AuctionSession());activeSaveKey=null}
+    if(studentSale&&(studentSale.room!==activeSaveKey||!matchesSale(studentSale.sale,session.sales[studentSale.index])))hideStudentSale();
+    const saleShown=data.sale?presentStudentSale(data.sale):false;
     render(); showPage('auction');
-    if(data.notice)announce(data.notice);
-  }catch(error){hideMaterialIntro();document.body.classList.add('student-waiting');$('#student-message').textContent='학생 화면을 갱신하지 못했습니다. 창을 닫고 교사 화면에서 다시 열어주세요.';$('#student-message').hidden=false}
+    if(data.notice&&!saleShown)announce(data.notice);
+  }catch(error){hideStudentSale();hideMaterialIntro();document.body.classList.add('student-waiting');$('#student-message').textContent='학생 화면을 갱신하지 못했습니다. 창을 닫고 교사 화면에서 다시 열어주세요.';$('#student-message').hidden=false}
 }
 if(displayChannel)displayChannel.onmessage=event=>{
   if(isStudent)receiveDisplay(event.data);
@@ -185,13 +206,13 @@ function renderResults(){
   }).join('');
 }
 
-function saveProgress(notice=''){
+function saveProgress(notice='',sale=null){
   if(isStudent)return false;
   if(!session.teams.length)return false;
   try{
     localStorage.setItem(activeSaveKey||SAVE_PREFIX+session.slotName,JSON.stringify(session.snapshot()));
-    unsaved=false; $('#save-error').hidden=true; publishDisplay(notice); return true;
-  }catch(error){unsaved=true;$('#save-error').hidden=false;publishDisplay(notice);return false}
+    unsaved=false; $('#save-error').hidden=true; publishDisplay(notice,sale); return true;
+  }catch(error){unsaved=true;$('#save-error').hidden=false;publishDisplay(notice,sale);return false}
 }
 
 function renderSavedSessions(){
@@ -280,7 +301,7 @@ function sellToTeam(index){
   if(isStudent)return;
   const sale=session.sell(index);
   const notice=`${sale.teamName} 낙찰 확정`+` · ${materials.find(m=>m.id===sale.matId).name} ${sale.qty}장 · ${sale.price}어스`;
-  render(); saveProgress(notice); announce(notice);
+  render(); saveProgress(notice,sale); announce(notice);
 }
 $('#undo').addEventListener('click',()=>{
   if(isStudent)return;
