@@ -10,7 +10,7 @@
 python3 -m http.server 8873 --bind 127.0.0.1
 ```
 
-정적 호스팅에서는 `index.html`, `style.css`, `auction-state.js`, `app.js`를 함께 제공합니다. 빌드나 패키지 설치는 필요하지 않습니다.
+정적 호스팅에서는 `index.html`, `style.css`, `auction-state.js`, `app.js`, `favicon.svg`를 함께 제공합니다. 빌드나 패키지 설치는 필요하지 않습니다.
 
 ## 수업 진행
 
